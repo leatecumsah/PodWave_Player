@@ -1,0 +1,11 @@
+C:\Users\buerklele\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\PodWave_Player.csproj.AssemblyReference.cache
+C:\Users\buerklele\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\MainWindow.baml
+C:\Users\buerklele\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\MainWindow.g.cs
+C:\Users\buerklele\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\App.g.cs
+C:\Users\buerklele\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\PodWave_Player_MarkupCompile.cache
+C:\Users\buerklele\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\PodWave_Player.g.resources
+C:\Users\buerklele\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\PodWave_Player.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\buerklele\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\PodWave_Player.AssemblyInfoInputs.cache
+C:\Users\buerklele\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\PodWave_Player.AssemblyInfo.cs
+C:\Users\buerklele\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\PodWave_Player.csproj.CoreCompileInputs.cache
+C:\Users\buerklele\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\PodWave_Player.sourcelink.json

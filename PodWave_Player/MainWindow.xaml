@@ -3,28 +3,115 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="PodWave_Player.MainWindow"
         Title="PodWave" Height="500" Width="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
+    <Border BorderBrush="#FFD5FF" BorderThickness="4" CornerRadius="15">
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#B47EB3" Offset="0.0"/>
+                <GradientStop Color="#FFD5FF" Offset="0.5"/>
+                <GradientStop Color="#8BB8A8" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Border.Background>
 
-        <!-- Linke Spalte: Liste aller Podcasts -->
-        <ListBox x:Name="PodcastList" Grid.Column="0" SelectionChanged="PodcastList_SelectionChanged"
-                 DisplayMemberPath="Titel" Margin="10,10,10,124" av:ItemsSource="{av:SampleData ItemCount=5}"/>
+        <Grid Margin="6,6,6,6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <!-- Video und Steuerung -->
+                <ColumnDefinition Width="209"/>
+                <!-- Metadatenbereich -->
+            </Grid.ColumnDefinitions>
 
-        <!-- Rechte Spalte: Details + Abspielsteuerung -->
-        <StackPanel Grid.Column="1" Margin="10,14,10,0" Height="346" VerticalAlignment="Top">
-            <TextBlock x:Name="PodcastDescription" TextWrapping="Wrap" Margin="0,10,0,10"/>
+            <Grid Grid.Column="0" Margin="10,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <!-- Titelleiste -->
+                    <RowDefinition Height="*"/>
+                    <!-- Video-Bereich -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Fortschrittsleiste -->
+                    <RowDefinition Height="53"/>
+                    <!-- Steuerleiste -->
+                </Grid.RowDefinitions>
 
-            <MediaElement x:Name="Player" LoadedBehavior="Manual" Margin="0,20,0,0"/>
-            <TextBlock x:Name="PodcastTitle" FontSize="20" FontWeight="Bold"/>
-        </StackPanel>
-        <Button Content="&lt;&lt;" HorizontalAlignment="Left" Margin="23,421,0,0" VerticalAlignment="Top" Click="Button_Click_Previous"/>
-        <Button Content="&gt;&gt;" HorizontalAlignment="Left" Margin="160,421,0,0" VerticalAlignment="Top" Click="Button_Click_PausePlay"/>
-        <Button Content="=&#xD;&#xA;=" HorizontalAlignment="Left" Margin="89,421,0,0" VerticalAlignment="Top" Click="Button_Click_Next"/>
-        <Slider HorizontalAlignment="Left" Margin="23,383,0,0" VerticalAlignment="Top" Width="269"/>
-        <Button Grid.Column="1" Content="Add new Podcast&#xD;&#xA;" HorizontalAlignment="Center" Margin="0,400,0,0" VerticalAlignment="Top" Height="53" Width="144" Click="Button_Click"/>
-    </Grid>
+                <!-- Titelleiste -->
+                <DockPanel Grid.Row="0" LastChildFill="True">
+                    <Border CornerRadius="15,15,15,15" Background="#8BB8A8" BorderThickness="0">
+                        <DockPanel VerticalAlignment="Center" Height="35" Width="667">
+                            <Image Source="Assets/podwaveicon.ico" Width="20" Height="20" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Simple Media Player" VerticalAlignment="Center" Foreground="White" FontSize="16" FontWeight="Bold"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" WindowChrome.IsHitTestVisibleInChrome="True" Margin="0,0,10,0">
+                                <Button x:Name="BTN_Minimize" Content="🗕" Style="{StaticResource ControlButtonStyle}" Click="BTN_Minimize_Click" Width="21"/>
+                                <Button x:Name="BTN_Maximize" Content="🗖" Style="{StaticResource ControlButtonStyle}" Click="BTN_Maximize_Click"/>
+                                <Button x:Name="BTN_Close" Content="✕" Style="{StaticResource ControlButtonStyle}" Click="BTN_Close_Click"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                </DockPanel>
+
+                <!-- Video-Bereich -->
+                <Border Background="#8BB8A8" Grid.Row="1" CornerRadius="10" Margin="0,10,0,10" HorizontalAlignment="Left" Width="666">
+                    <MediaElement x:Name="mediaElement" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Uniform" HorizontalAlignment="Right" Width="666" RenderTransformOrigin="0.344,0.502"/>
+
+                </Border>
+
+                <!-- Fortschrittsleiste -->
+                <Slider x:Name="ProgressSlider" Grid.Row="2" Margin="0,0,0,5"
+                        Minimum="0" Maximum="100" Value="0" 
+                        Background="#FFD5FF" 
+                        Foreground="#B47EB3" 
+                        MouseDown="ProgressSlider_MouseDown"/>
+
+                <!-- Steuerleiste -->
+                <Border Background="#B47EB3" Grid.Row="3" CornerRadius="15" Margin="0,0,0,4">
+                    <DockPanel Margin="5,0,0,0">
+                        <Button Content="⏮" Style="{StaticResource RoundButtonStyle}" Click="Previous_Click" />
+                        <Button Content="▶" Style="{StaticResource RoundButtonStyle}" Click="PlayButton_Click"/>
+                        <Button Content="⏸" Style="{StaticResource RoundButtonStyle}" Click="PauseButton_Click"/>
+                        <Button Content="⏭" Style="{StaticResource RoundButtonStyle}" Click="Next_Click"/>
+                        <Button Content="⏹" Style="{StaticResource RoundButtonStyle}" Click="StopButton_Click"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,10,0">
+                            <TextBlock Text="🔊" Foreground="White" VerticalAlignment="Center" Margin="5" Height="19" Width="19"/>
+                            <Slider x:Name="VolumeSlider" Minimum="0" Maximum="1" Value="0.5" Width="198" Margin="0,7,0,0"
+                                    TickFrequency="0.1" IsSnapToTickEnabled="True"
+                                    ValueChanged="VolumeSlider_ValueChanged" RenderTransformOrigin="0.495,0.673"/>
+                        </StackPanel>
+                        <Button Content="🗁 Datei wählen" Click="Select_Folder" FontSize="15" FontWeight="Bold" Width="146" Foreground="White" Background="#8BB8A8" Margin="0,5,0,5"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+
+            <!-- Metadatenbereich -->
+            <Border Grid.Column="1" Background="#8BB8A8" CornerRadius="10" Margin="10,0,10,271">
+                <StackPanel Margin="10">
+                    <TextBlock Text="currently playing" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                    <TextBlock Text="Titel:" Foreground="White"/>
+                    <TextBlock x:Name="MetaTitle" Text="-" Foreground="White"/>
+                    <TextBlock Text="Dauer:" Foreground="White"/>
+                    <TextBlock x:Name="MetaDuration" Text="-" Foreground="White"/>
+                    <TextBlock Text="Bitrate:" Foreground="White"/>
+                    <TextBlock x:Name="MetaBitrate" Text="-" Foreground="White"/>
+                </StackPanel>
+
+            </Border>
+
+            <!--Playlist-->
+            <Border Grid.Column="1" Background="#8BB8A8" CornerRadius="10" Margin="10,176,10,10">
+                <StackPanel Margin="10">
+                    <TextBlock Text="Playlist oder so" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                    <ListBox 
+                        x:Name="myListBox" ItemsSource="{Binding Videos}"
+                        SelectionChanged="myListBox_SelectionChanged"
+                         DisplayMemberPath="Title"
+                         Background="#8BB8A8"
+                         Foreground="White"
+                         Height="200"
+                         Margin="0,5,0,0"/>
+
+
+                </StackPanel>
+
+            </Border>
+
+
+        </Grid>
+    </Border>
 </Window>
-
