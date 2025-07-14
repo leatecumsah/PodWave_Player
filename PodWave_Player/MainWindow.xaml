@@ -1,6 +1,7 @@
-﻿<Window x:Class="PodWave_Player.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="PodWave_Player.MainWindow"
         Title="PodWave" Height="500" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -10,16 +11,20 @@
 
         <!-- Linke Spalte: Liste aller Podcasts -->
         <ListBox x:Name="PodcastList" Grid.Column="0" SelectionChanged="PodcastList_SelectionChanged"
-                 DisplayMemberPath="Titel" Margin="10"/>
+                 DisplayMemberPath="Titel" Margin="10,10,10,124" av:ItemsSource="{av:SampleData ItemCount=5}"/>
 
         <!-- Rechte Spalte: Details + Abspielsteuerung -->
-        <StackPanel Grid.Column="1" Margin="10">
-            <TextBlock x:Name="PodcastTitle" FontSize="20" FontWeight="Bold"/>
+        <StackPanel Grid.Column="1" Margin="10,14,10,0" Height="346" VerticalAlignment="Top">
             <TextBlock x:Name="PodcastDescription" TextWrapping="Wrap" Margin="0,10,0,10"/>
-            <Button Content="Abspielen" Click="PlayButton_Click" Width="100"/>
 
             <MediaElement x:Name="Player" LoadedBehavior="Manual" Margin="0,20,0,0"/>
+            <TextBlock x:Name="PodcastTitle" FontSize="20" FontWeight="Bold"/>
         </StackPanel>
+        <Button Content="&lt;&lt;" HorizontalAlignment="Left" Margin="23,421,0,0" VerticalAlignment="Top" Click="Button_Click_Previous"/>
+        <Button Content="&gt;&gt;" HorizontalAlignment="Left" Margin="160,421,0,0" VerticalAlignment="Top" Click="Button_Click_PausePlay"/>
+        <Button Content="=&#xD;&#xA;=" HorizontalAlignment="Left" Margin="89,421,0,0" VerticalAlignment="Top" Click="Button_Click_Next"/>
+        <Slider HorizontalAlignment="Left" Margin="23,383,0,0" VerticalAlignment="Top" Width="269"/>
+        <Button Grid.Column="1" Content="Add new Podcast&#xD;&#xA;" HorizontalAlignment="Center" Margin="0,400,0,0" VerticalAlignment="Top" Height="53" Width="144" Click="Button_Click"/>
     </Grid>
 </Window>
 

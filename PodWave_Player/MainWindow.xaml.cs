@@ -20,4 +20,24 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
     }
+
+    private void Button_Click_Previous(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void Button_Click_Next(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void Button_Click_PausePlay(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }
