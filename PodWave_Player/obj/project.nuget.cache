@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "BjVKBgBE+3E=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\buerklele\\.nuget\\packages\\microsoft.net.sdk.compilers.toolset\\9.0.300\\microsoft.net.sdk.compilers.toolset.9.0.300.nupkg.sha512"
+  ],
+  "logs": []
+}
