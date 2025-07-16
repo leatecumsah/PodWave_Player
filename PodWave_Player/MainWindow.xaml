@@ -101,7 +101,7 @@
                     <TextBlock Text="Dauer:" Foreground="#8663AC"/>
                     <TextBlock x:Name="MetaDuration" Text="-" Foreground="#8663AC"/>
                     <TextBlock Text="idc:" Foreground="#8663AC"/>
-                    <TextBlock x:Name="idc" Text="-" Foreground="#8663AC" Height="22" RenderTransformOrigin="0.5,0.5"/>
+                    <TextBlock x:Name="PodcastDescriptionTextBlock" Text="-" Foreground="#8663AC" Height="22" RenderTransformOrigin="0.5,0.5"/>
                     <TextBox
          x:Name="Description" Foreground="#8663AC" Background="#EFE1F3" FontSize="12"/>
                 </StackPanel>

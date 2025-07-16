@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PodWave_Player.Models
 {
-    class Podcast
+    public class Podcast
     {
         public string PodcastId { get; set; }
-        public string Title { get; set; }
-        public string DescriptionP { get; set; }
+        public string TitleP { get; set; }
+        public string DescriptionP { get; set; } //p for Podcast-specific description
         public string AudioUrl { get; set; }
         public string ImageUrl { get; set; }
         public List<Episode> Episodes { get; set; } = new();

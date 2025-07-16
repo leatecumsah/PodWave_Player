@@ -1810,23 +1810,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\buerklele\\.nuget\\packages\\": {},
+    "C:\\Users\\leabu\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj",
+      "projectUniqueName": "C:\\Users\\leabu\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj",
       "projectName": "PodWave_Player",
-      "projectPath": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj",
-      "packagesPath": "C:\\Users\\buerklele\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\obj\\",
+      "projectPath": "C:\\Users\\leabu\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj",
+      "packagesPath": "C:\\Users\\leabu\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\leabu\\source\\repos\\PodWave_Player\\PodWave_Player\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\buerklele\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\leabu\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -1853,7 +1853,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net9.0-windows7.0": {
@@ -1887,12 +1887,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.Net.Sdk.Compilers.Toolset",
-            "version": "[9.0.300, 9.0.300]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
@@ -1901,7 +1895,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

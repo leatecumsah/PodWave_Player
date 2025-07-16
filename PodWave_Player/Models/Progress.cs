@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PodWave_Player.Models
+﻿namespace PodWave_Player.Models
 {
-    class Progress
+    public class PlaybackProgress
     {
-        public string Position { get; set; }
+        public int PositionInSeconds { get; set; } // Playback position in seconds
     }
 }

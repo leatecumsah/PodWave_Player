@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\buerklele\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\
+C:\Users\leabu\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\
 PodWave_Player
 none
 false
-TRACE;DEBUG;NET;NET9_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-C:\Users\buerklele\source\repos\PodWave_Player\PodWave_Player\App.xaml
+TRACE;DEBUG;NET;NET9_0;NETCOREAPP
+C:\Users\leabu\source\repos\PodWave_Player\PodWave_Player\App.xaml
 11407045341
 
-61088536983
-204-225410703
+8-1801767751
+204-165319998
 MainWindow.xaml;
 
 False
