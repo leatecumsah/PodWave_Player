@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{D331FAEF-FC2E-4F15-9084-A9359357705F}|PodWave_Player\\PodWave_Player.csproj|c:\\users\\buerklele\\source\\repos\\podwave_player\\podwave_player\\models\\episodes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D331FAEF-FC2E-4F15-9084-A9359357705F}|PodWave_Player\\PodWave_Player.csproj|solutionrelative:podwave_player\\models\\episodes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D331FAEF-FC2E-4F15-9084-A9359357705F}|PodWave_Player\\PodWave_Player.csproj|c:\\users\\buerklele\\source\\repos\\podwave_player\\podwave_player\\models\\podcast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D331FAEF-FC2E-4F15-9084-A9359357705F}|PodWave_Player\\PodWave_Player.csproj|solutionrelative:podwave_player\\models\\podcast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D331FAEF-FC2E-4F15-9084-A9359357705F}|PodWave_Player\\PodWave_Player.csproj|c:\\users\\buerklele\\source\\repos\\podwave_player\\podwave_player\\models\\progress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D331FAEF-FC2E-4F15-9084-A9359357705F}|PodWave_Player\\PodWave_Player.csproj|solutionrelative:podwave_player\\models\\progress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D331FAEF-FC2E-4F15-9084-A9359357705F}|PodWave_Player\\PodWave_Player.csproj|c:\\users\\buerklele\\source\\repos\\podwave_player\\podwave_player\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{D331FAEF-FC2E-4F15-9084-A9359357705F}|PodWave_Player\\PodWave_Player.csproj|solutionrelative:podwave_player\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
@@ -13,14 +25,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{D331FAEF-FC2E-4F15-9084-A9359357705F}|PodWave_Player\\PodWave_Player.csproj|c:\\users\\buerklele\\source\\repos\\podwave_player\\podwave_player\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{D331FAEF-FC2E-4F15-9084-A9359357705F}|PodWave_Player\\PodWave_Player.csproj|solutionrelative:podwave_player\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D331FAEF-FC2E-4F15-9084-A9359357705F}|PodWave_Player\\PodWave_Player.csproj|c:\\users\\buerklele\\source\\repos\\podwave_player\\podwave_player\\models\\podcast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D331FAEF-FC2E-4F15-9084-A9359357705F}|PodWave_Player\\PodWave_Player.csproj|solutionrelative:podwave_player\\models\\podcast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D331FAEF-FC2E-4F15-9084-A9359357705F}|PodWave_Player\\PodWave_Player.csproj|c:\\users\\buerklele\\source\\repos\\podwave_player\\podwave_player\\models\\episodes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D331FAEF-FC2E-4F15-9084-A9359357705F}|PodWave_Player\\PodWave_Player.csproj|solutionrelative:podwave_player\\models\\episodes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,37 +34,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Episodes.cs",
-              "DocumentMoniker": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\Models\\Episodes.cs",
-              "RelativeDocumentMoniker": "PodWave_Player\\Models\\Episodes.cs",
-              "ToolTip": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\Models\\Episodes.cs",
-              "RelativeToolTip": "PodWave_Player\\Models\\Episodes.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-15T09:07:33.449Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Podcast.cs",
-              "DocumentMoniker": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\Models\\Podcast.cs",
-              "RelativeDocumentMoniker": "PodWave_Player\\Models\\Podcast.cs",
-              "ToolTip": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\Models\\Podcast.cs",
-              "RelativeToolTip": "PodWave_Player\\Models\\Podcast.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-15T09:03:13.961Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "App.xaml",
               "DocumentMoniker": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\App.xaml",
               "RelativeDocumentMoniker": "PodWave_Player\\App.xaml",
@@ -72,7 +50,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\MainWindow.xaml",
               "RelativeDocumentMoniker": "PodWave_Player\\MainWindow.xaml",
@@ -84,15 +62,54 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "PodWave_Player\\MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\MainWindow.xaml.cs",
               "RelativeToolTip": "PodWave_Player\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAFgAAAAAAAAAAAAYwGcAAAAWAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACYAAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-14T08:18:51.801Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Progress.cs",
+              "DocumentMoniker": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\Models\\Progress.cs",
+              "RelativeDocumentMoniker": "PodWave_Player\\Models\\Progress.cs",
+              "ToolTip": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\Models\\Progress.cs",
+              "RelativeToolTip": "PodWave_Player\\Models\\Progress.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-16T07:39:29.782Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Episodes.cs",
+              "DocumentMoniker": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\Models\\Episodes.cs",
+              "RelativeDocumentMoniker": "PodWave_Player\\Models\\Episodes.cs",
+              "ToolTip": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\Models\\Episodes.cs",
+              "RelativeToolTip": "PodWave_Player\\Models\\Episodes.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-15T09:07:33.449Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Podcast.cs",
+              "DocumentMoniker": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\Models\\Podcast.cs",
+              "RelativeDocumentMoniker": "PodWave_Player\\Models\\Podcast.cs",
+              "ToolTip": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\Models\\Podcast.cs",
+              "RelativeToolTip": "PodWave_Player\\Models\\Podcast.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-15T09:03:13.961Z",
               "EditorCaption": ""
             }
           ]

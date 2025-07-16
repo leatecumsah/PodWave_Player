@@ -32,7 +32,7 @@ public partial class MainWindow : Window
         podcasts.Add(new Podcast
         {
             Title = "IT Berufe Podcast",
-            Description = "Ein Podcast über IT-Berufe und Karrierechancen in der IT-Branche.",
+            DescriptionP = "Ein Podcast über IT-Berufe und Karrierechancen in der IT-Branche.",
             AudioUrl = "https://it-berufe-podcast.de/?powerpress_pinw=5714-podcast",
             //Episodes = new List<Episode>
          
