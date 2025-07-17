@@ -12,4 +12,6 @@ namespace PodWave_Player.Models
         public string ImageUrl { get; set; }
         public List<Episode> Episodes { get; set; } = new();
     }
+
+   
 }

@@ -87,19 +87,19 @@
                                     TickFrequency="0.1" IsSnapToTickEnabled="True"
                                     ValueChanged="VolumeSlider_ValueChanged" RenderTransformOrigin="0.495,0.673"/>
                         </StackPanel>
-                        <Button Content="🗁 RSS-Feed" Style="{StaticResource RoundButtonStyle}" Click="Select_Folder" FontSize="15" FontWeight="Bold" Width="160" Foreground="White" Background="#7D57A6" Margin="0,5,0,5"/>
+                        <Button Content="🗁 RSS-Feed" Style="{StaticResource RoundButtonStyle}" Click="AddRssFeed" FontSize="15" FontWeight="Bold" Width="160" Foreground="White" Background="#7D57A6" Margin="0,5,0,5"/>
                     </DockPanel>
                 </Border>
             </Grid>
 
             <!-- Metadata -->
-            <Border Grid.Column="1" Background="#EFE1F3" CornerRadius="10" Margin="10,43,10,444">
+            <Border Grid.Column="1" Background="#EFE1F3" CornerRadius="10" Margin="10,43,10,460">
                 <StackPanel Margin="10">
                     <TextBlock Text="currently playing" FontFamily="Harlow Solid Italic" FontSize="22" FontWeight="Bold" Foreground="#8663AC"/>
                     <TextBlock Text="Titel:" Foreground="#8663AC"/>
-                    <TextBlock x:Name="MetaTitle" Text="-" Foreground="#8663AC"/>
+                    <TextBlock x:Name="TitleP" Text="-" Foreground="#8663AC"/>
                     <TextBlock Text="Dauer:" Foreground="#8663AC"/>
-                    <TextBlock x:Name="MetaDuration" Text="-" Foreground="#8663AC"/>
+                    <TextBlock x:Name="DurationP" Text="-" Foreground="#8663AC"/>
                     <TextBlock Text="idc:" Foreground="#8663AC"/>
                     <TextBlock x:Name="PodcastDescriptionTextBlock" Text="-" Foreground="#8663AC" Height="22" RenderTransformOrigin="0.5,0.5"/>
                     <TextBox
@@ -109,17 +109,29 @@
             </Border>
 
             <!--Playlist-->
-            <Border Grid.Column="1" Background="#EFE1F3" CornerRadius="10" Margin="10,310,10,10" Height="573" VerticalAlignment="Top">
-                <StackPanel Margin="10,10,10,-252">
+            <Border Grid.Column="1" Background="#EFE1F3" CornerRadius="10" Margin="10,310,10,0" Height="439" VerticalAlignment="Top">
+                <StackPanel Margin="10,10,10,10">
                     <TextBlock Text="Playlist" FontFamily="Harlow Solid Italic" FontSize="22" FontWeight="Bold" Foreground="#8663AC" Height="22"/>
                     <ListBox 
                         x:Name="PodcastList" ItemsSource="{Binding Videos}"
                          SelectionChanged="PodcastList_SelectionChanged"
-                         DisplayMemberPath="Title"
+                         DisplayMemberPath="TitleP"
                          Background="#EFE1F3"
                          Foreground="#8663AC"
-                         Height="247"
+                         Height="152"
                          />
+                    <TextBlock Text="Episodes" FontSize="18" FontWeight="Bold" Foreground="#8663AC" Margin="0,10,0,0"/>
+                    <ListBox x:Name="EpisodeList"
+                         DisplayMemberPath="TitleE"
+                         SelectionChanged="EpisodeList_SelectionChanged"
+                         Background="#EFE1F3"
+                         Foreground="#8663AC"
+                         Height="212"/>
+                    <TextBlock Text="Episode title:" Foreground="#8663AC" />
+                    <TextBlock x:Name="EpisodeTitleTextBlock" Text="-" Foreground="#8663AC" />
+
+                    <TextBlock Text="Episode description:" Foreground="#8663AC" />
+                    <TextBlock x:Name="EpisodeDescriptionTextBlock" Text="-" Foreground="#8663AC" TextWrapping="Wrap" Height="100"/>
 
 
                 </StackPanel>

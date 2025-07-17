@@ -26,6 +26,7 @@ namespace PodWave_Player
                 TitleP = "IT Careers Podcast",
                 DescriptionP = "A podcast about careers and opportunities in the IT industry.",
                 AudioUrl = "https://it-berufe-podcast.de/?powerpress_pinw=5714-podcast"
+                
             });
 
             PodcastList.ItemsSource = podcasts;
@@ -38,14 +39,10 @@ namespace PodWave_Player
                 MetaTitle.Text = selected.TitleP;
                 PodcastDescriptionTextBlock.Text = selected.DescriptionP;
 
-                if (!string.IsNullOrEmpty(selected.AudioUrl))
-                {
-                    var source = new Uri(selected.AudioUrl);
-                    player.Source = source;
-                    player.Play();
-                }
+                EpisodeList.ItemsSource = selected.Episodes;
             }
         }
+
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
@@ -75,8 +72,51 @@ namespace PodWave_Player
 
         private void Next_Click(object sender, RoutedEventArgs e) { }
 
-        private void Select_Folder(object sender, RoutedEventArgs e) { }
+        private void EpisodeList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (EpisodeList.SelectedItem is Episode selectedEpisode)
+            {
+                if (!string.IsNullOrEmpty(selectedEpisode.AudioUrl))
+                {
+                    var source = new Uri(selectedEpisode.AudioUrl);
+                    player.Source = source;
+                    player.Play();
+
+                    // Optional: Zusatzinfos anzeigen
+                    EpisodeTitleTextBlock.Text = selectedEpisode.TitleE;
+                    EpisodeDescriptionTextBlock.Text = selectedEpisode.DescriptionE;
+                }
+            }
+        }
+
 
         private void ProgressSlider_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) { }
+
+        private async void AddRssFeed(object sender, RoutedEventArgs e) //warum async??
+        {
+           
+            {
+                //FOR TESTINGG !!!!
+                string feedUrl = "https://it-berufe-podcast.de/feed/";
+
+                try
+                {
+                    Podcast podcast = await RssParser.LoadPodcastFromFeedAsync(feedUrl);
+                    podcasts.Add(podcast);
+
+      
+                    PodcastList.ItemsSource = null;
+                    PodcastList.ItemsSource = podcasts;
+
+                    MessageBox.Show("Podcast \"" + podcast.TitleP + "\" loaded with " + podcast.Episodes.Count + " episodes.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error loading RSS feed:\n" + ex.Message);
+                }
+
+
+             }
+         }
+} 
     }
-}
