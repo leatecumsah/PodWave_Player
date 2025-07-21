@@ -5,7 +5,7 @@ namespace PodWave_Player.Models
 {
     public class Podcast
     {
-        public string PodcastId { get; set; }
+        public int PodcastId { get; set; }
         public string TitleP { get; set; }
         public string DescriptionP { get; set; } //p for Podcast-specific description
         public string AudioUrl { get; set; }
@@ -15,3 +15,4 @@ namespace PodWave_Player.Models
 
    
 }
+// This class represents a podcast with its metadata and associated episodes.

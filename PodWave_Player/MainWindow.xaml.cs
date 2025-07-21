@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using PodWave_Player.Services;// internal Service methode for the rsss thingy
+using MySqlConnector;
+using System.Configuration;
 
 
 namespace PodWave_Player
@@ -15,22 +17,23 @@ namespace PodWave_Player
         public MainWindow()
         {
             InitializeComponent();
-            LoadDummyData();
+            //LoadDummyData();
+            _ = LoadPodcastsFromDatabase(); // Async ohne await aufrufen
         }
 
-        private void LoadDummyData()
-        {
-            // Dummy podcast for testing purposes
-            podcasts.Add(new Podcast
-            {
-                TitleP = "IT Careers Podcast",
-                DescriptionP = "A podcast about careers and opportunities in the IT industry.",
-                AudioUrl = "https://it-berufe-podcast.de/?powerpress_pinw=5714-podcast"
-                
-            });
+        //private void LoadDummyData()
+        //{
+        //    // Dummy podcast for testing purposes
+        //    podcasts.Add(new Podcast
+        //    {
+        //        TitleP = "IT Careers Podcast",
+        //        DescriptionP = "A podcast about careers and opportunities in the IT industry.",
+        //        AudioUrl = "https://it-berufe-podcast.de/?powerpress_pinw=5714-podcast"
 
-            PodcastList.ItemsSource = podcasts;
-        }
+        //    });
+
+        //    PodcastList.ItemsSource = podcasts;
+        //}
 
         private void PodcastList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -94,7 +97,7 @@ namespace PodWave_Player
 
         private async void AddRssFeed(object sender, RoutedEventArgs e) //warum async??
         {
-           
+
             {
                 //FOR TESTINGG !!!!
                 string feedUrl = "https://it-berufe-podcast.de/feed/";
@@ -104,7 +107,7 @@ namespace PodWave_Player
                     Podcast podcast = await RssParser.LoadPodcastFromFeedAsync(feedUrl);
                     podcasts.Add(podcast);
 
-      
+
                     PodcastList.ItemsSource = null;
                     PodcastList.ItemsSource = podcasts;
 
@@ -116,7 +119,60 @@ namespace PodWave_Player
                 }
 
 
-             }
-         }
-} 
+            }
+        }
+
+        private async Task LoadPodcastsFromDatabase()
+        {
+            podcasts.Clear();
+
+            using var conn= DataBaseHelper.GetConnection();
+            await conn.OpenAsync();
+
+            string podcastQuery="Select * from podcasts";
+            using var podcastCmd = new MySqlCommand(podcastQuery, conn);
+            using var reader= await podcastCmd.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync()) 
+            {
+                var podcast = new Podcast()
+                {
+                    PodcastId = reader.GetInt32("PodcastId"),
+                    TitleP = reader["Title"]?.ToString(),
+                    DescriptionP = reader["Description"]?.ToString(),
+                    AudioUrl = reader["Feedurl"]?.ToString(),
+                    ImageUrl = reader["ImageUrl"]?.ToString()
+                };
+                podcasts.Add(podcast);
+            }
+            await reader.CloseAsync();
+
+            foreach (var podcast in podcasts)
+            {
+                podcast.Episodes=new();
+                string episodeQuery= "SELECT * FROM episodes WHERE PodcastId = @PodcastId";
+                using var episodeCmd = new MySqlCommand(episodeQuery, conn);
+                episodeCmd.Parameters.AddWithValue("@PodcastId", podcast.PodcastId);
+
+                using var episodeReader = await episodeCmd.ExecuteReaderAsync();
+                while (await episodeReader.ReadAsync())
+                {
+                    var episode = new Episode()
+                    {
+                        EpisodeId = episodeReader.GetInt32("EpisodeId"),
+                        TitleE = episodeReader["Title"]?.ToString(),
+                        DescriptionE = episodeReader["Description"]?.ToString(),
+                        AudioUrl = episodeReader["AudioUrl"]?.ToString(),
+                        DurationInSeconds = episodeReader.GetInt32("DurationInSeconds")
+                    };
+                
+                }
+                await reader.CloseAsync();
+            }
+            PodcastList.ItemsSource = null;
+            PodcastList.ItemsSource = podcasts;
+        }
+
+        
     }
+}
