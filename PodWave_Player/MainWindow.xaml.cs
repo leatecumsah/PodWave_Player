@@ -1,11 +1,12 @@
-﻿using PodWave_Player.Models;
+﻿using MySqlConnector;
+using PodWave_Player.Models;
+using PodWave_Player.Services;// internal Service methode for the rsss thingy
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Windows;
 using System.Windows.Controls;
-using PodWave_Player.Services;// internal Service methode for the rsss thingy
-using MySqlConnector;
-using System.Configuration;
+using System.Windows.Threading;
 
 
 namespace PodWave_Player
@@ -13,12 +14,18 @@ namespace PodWave_Player
     public partial class MainWindow : Window
     {
         private List<Podcast> podcasts = new();
+        private readonly DispatcherTimer timer = new DispatcherTimer();
 
         public MainWindow()
         {
             InitializeComponent();
             //LoadDummyData();
             _ = LoadPodcastsFromDatabase(); // Async ohne await aufrufen
+            VolumeSlider.Value = 0.5; // Initiale Lautstärke
+            player.Volume = VolumeSlider.Value;
+
+            timer.Interval = TimeSpan.FromMilliseconds(500);
+            timer.Tick += Timer_Tick;
         }
 
         //private void LoadDummyData()
@@ -49,7 +56,7 @@ namespace PodWave_Player
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            player.Play();
+            player.Play(); // change aus pause wenn click!! noch einfügen
         }
 
         private void BTN_Minimize_Click(object sender, RoutedEventArgs e)
@@ -67,7 +74,23 @@ namespace PodWave_Player
             Close();
         }
 
-        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) { }
+        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+{
+    if (player != null)
+    {
+        player.Volume = VolumeSlider.Value;
+
+        if (VolumeSlider.Value == 0)
+            VolumeIcon.Content = "🔇";
+        else if (VolumeSlider.Value < 0.3)
+            VolumeIcon.Content = "🔈";
+        else if (VolumeSlider.Value < 0.7)
+            VolumeIcon.Content = "🔉";
+        else
+            VolumeIcon.Content = "🔊";
+    }
+}
+
 
         private void Previous_Click(object sender, RoutedEventArgs e) { }
 
@@ -80,15 +103,20 @@ namespace PodWave_Player
             if (EpisodeList.SelectedItem is Episode selectedEpisode)
             {
                 if (!string.IsNullOrEmpty(selectedEpisode.AudioUrl))
+                    try{ 
                 {
                     var source = new Uri(selectedEpisode.AudioUrl);
                     player.Source = source;
                     player.Play();
+                            timer.Start();
+
 
                     // Optional: Zusatzinfos anzeigen
                     EpisodeTitleTextBlock.Text = selectedEpisode.TitleE;
                     EpisodeDescriptionTextBlock.Text = selectedEpisode.DescriptionE;
                 }
+                        }
+                    catch(Exception ex){ MessageBox.Show("Fehler beim Abspielen: "+ex.Message);}
             }
         }
 
@@ -173,6 +201,21 @@ namespace PodWave_Player
             PodcastList.ItemsSource = podcasts;
         }
 
-        
+        private void ProgressSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+{
+    if (player.NaturalDuration.HasTimeSpan && Math.Abs(player.Position.TotalSeconds - ProgressSlider.Value) > 1)
+    {
+        player.Position = TimeSpan.FromSeconds(ProgressSlider.Value);
+    }
+}
+
+        private void Timer_Tick(object sender, EventArgs e)
+{
+    if (player.NaturalDuration.HasTimeSpan)
+    {
+        ProgressSlider.Maximum = player.NaturalDuration.TimeSpan.TotalSeconds;
+        ProgressSlider.Value = player.Position.TotalSeconds;
+    }
+}
     }
 }

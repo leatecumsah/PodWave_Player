@@ -82,7 +82,7 @@
                         <Button Content="⏭" Style="{StaticResource RoundButtonStyle}" Click="Next_Click"/>
                         <Button Content="⏹" Style="{StaticResource RoundButtonStyle}" Click="StopButton_Click"/>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,10,0">
-                            <TextBlock Text="🔊" Foreground="#8663AC" VerticalAlignment="Center" Margin="5" Height="19" Width="19"/>
+                            <Label x:Name="VolumeIcon" Content="🔊" Foreground="#8663AC" VerticalAlignment="Center" Margin="5" Height="19" Width="19"/>
                             <Slider x:Name="VolumeSlider" Minimum="0" Maximum="1" Value="0.5" Width="142" Margin="0,7,0,0"
                                     TickFrequency="0.1" IsSnapToTickEnabled="True"
                                     ValueChanged="VolumeSlider_ValueChanged" RenderTransformOrigin="0.495,0.673"/>
