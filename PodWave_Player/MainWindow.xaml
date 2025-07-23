@@ -54,7 +54,7 @@
                             <TranslateTransform Y="1.496"/>
                         </TransformGroup>
                     </Border.RenderTransform>
-                    <MediaElement x:Name="player" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Uniform" RenderTransformOrigin="0.344,0.502" Margin="0,0,0,0" HorizontalAlignment="Left" Width="560">
+                    <MediaElement x:Name="player" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Uniform" RenderTransformOrigin="0.344,0.502" Margin="3,-3,-12,3">
                         <MediaElement.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -96,8 +96,10 @@
             <Border Grid.Column="1" Background="#EFE1F3" CornerRadius="10" Margin="10,43,10,460">
                 <StackPanel Margin="10">
                     <TextBlock Text="currently playing" FontFamily="Harlow Solid Italic" FontSize="22" FontWeight="Bold" Foreground="#8663AC"/>
-                    <TextBlock Text="Titel:" Foreground="#8663AC"/>
+                    <TextBlock Text="Podcast-Titel:" Foreground="#8663AC"/>
                     <TextBlock x:Name="MetaTitle" Text="-" Foreground="#8663AC"/>
+                    <TextBlock Text="Episode-Titel:" Foreground="#8663AC"/>
+                    <TextBlock x:Name="TitleE" Text="-" Foreground="#8663AC"/>
                     <TextBlock Text="Dauer:" Foreground="#8663AC"/>
                     <TextBlock x:Name="MetaDuration" Text="-" Foreground="#8663AC"/>
                     <TextBlock Text="idc:" Foreground="#8663AC"/>

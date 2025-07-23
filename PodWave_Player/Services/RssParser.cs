@@ -9,7 +9,7 @@ using PodWave_Player.Models;
 
 namespace PodWave_Player.Services
 {
-    public static class RssParser
+    public static class RssParser // This class is responsible for parsing RSS feeds to extract podcast information.
     {
         public static async Task<Podcast> LoadPodcastFromFeedAsync(string feedUrl)
         {
@@ -26,7 +26,7 @@ namespace PodWave_Player.Services
                 Episodes = new List<Episode>()
             };
 
-            foreach (var item in feed.Items)
+            foreach (var item in feed.Items) // Iterate through each item in the feed to extract episode details.
             {
                 string audioUrl = item.Links.FirstOrDefault(l => l.RelationshipType == "enclosure")?.Uri.ToString();
 
