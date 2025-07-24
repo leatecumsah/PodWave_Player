@@ -11,7 +11,7 @@ namespace PodWave_Player.Services
 {
     public static class RssParser // This class is responsible for parsing RSS feeds to extract podcast information.
     {
-        public static async Task<Podcast> LoadPodcastFromFeedAsync(string feedUrl)
+        public static async Task<Podcast> LoadPodcastFromFeedAsync(string feedUrl) // This method fetches the RSS feed from the provided URL and parses it to create a Podcast object.
         {
             using HttpClient client = new();
             using var stream = await client.GetStreamAsync(feedUrl);

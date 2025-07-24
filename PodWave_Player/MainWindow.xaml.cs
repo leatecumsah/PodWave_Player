@@ -49,7 +49,7 @@ namespace PodWave_Player
             if (PodcastList.SelectedItem is Podcast selected)
             {
                 MetaTitle.Text = selected.TitleP;
-                PodcastDescriptionTextBlock.Text = selected.DescriptionP;
+                //PodcastDescriptionTextBlock.Text = selected.DescriptionP;
 
                 EpisodeList.ItemsSource = selected.Episodes;
             }
@@ -123,7 +123,7 @@ namespace PodWave_Player
                             var source = new Uri(selectedEpisode.AudioUrl);// Create a new Uri from the episode's audio URL
                             player.Source = source;// Set the player's source to the selected episode's audio URL
                             EpisodeTitleTextBlock.Text = selectedEpisode.TitleE;// Set the title text block to the selected episode's title
-                            EpisodeDescriptionTextBlock.Text = selectedEpisode.DescriptionE;// Set the description text block to the selected episode's description
+                            
 
                             if (selectedEpisode.EpisodeId > 0)// Check if the episode has a valid ID
                             {
