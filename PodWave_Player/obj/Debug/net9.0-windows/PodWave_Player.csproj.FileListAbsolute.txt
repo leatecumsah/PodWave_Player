@@ -54,3 +54,5 @@ C:\Users\leabu\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windo
 C:\Users\leabu\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\PodWave_Player.pdb
 C:\Users\leabu\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\PodWave_Player.genruntimeconfig.cache
 C:\Users\leabu\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\ref\PodWave_Player.dll
+C:\Users\leabu\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\RssFeedInputWindow.baml
+C:\Users\leabu\source\repos\PodWave_Player\PodWave_Player\obj\Debug\net9.0-windows\RssFeedInputWindow.g.cs

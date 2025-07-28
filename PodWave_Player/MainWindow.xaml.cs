@@ -1,5 +1,6 @@
 ﻿using MySqlConnector;
-using PodWave_Player.Models;
+using PodWave_Player.Helpers;
+using PodWave_Player.Models; 
 using PodWave_Player.Services;// internal Service methode for the rsss thingy
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,9 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+
 
 // TODO: Alle Helper-Methoden in eigene Klasse (z. B. PlayerHelper) auslagern
 // TODO: Play-Button-Animation 
@@ -49,18 +52,34 @@ namespace PodWave_Player
             if (PodcastList.SelectedItem is Podcast selected)
             {
                 MetaTitle.Text = selected.TitleP;
-                //PodcastDescriptionTextBlock.Text = selected.DescriptionP;
-
                 EpisodeList.ItemsSource = selected.Episodes;
+
+                // show Cover
+                if (!string.IsNullOrEmpty(selected.ImageUrl))
+                {
+                    try
+                    {
+                        CoverImage.Source = new BitmapImage(new Uri(selected.ImageUrl));
+                    }
+                    catch
+                    {
+                        CoverImage.Source = null; // if no pic, no error
+                    }
+                }
+                else
+                {
+                    CoverImage.Source = null; // no pic there
+                }
             }
         }
+
 
 
         private async Task LoadPodcastsFromDatabase() // Method to load podcasts from the database
         {
             podcasts.Clear();
 
-            using var conn = DataBaseHelper.GetConnection();
+            using var conn = DatabaseHelper.GetConnection();
             await conn.OpenAsync();
 
             string podcastQuery = "Select * from podcasts";
@@ -74,7 +93,7 @@ namespace PodWave_Player
                     PodcastId = reader.GetInt32("PodcastId"),
                     TitleP = reader["Title"]?.ToString(),
                     DescriptionP = reader["Description"]?.ToString(),
-                    AudioUrl = reader["Feedurl"]?.ToString(),
+                    FeedUrl = reader["Feedurl"]?.ToString(),
                     ImageUrl = reader["ImageUrl"]?.ToString()
                 };
                 podcasts.Add(podcast);
@@ -127,7 +146,7 @@ namespace PodWave_Player
 
                             if (selectedEpisode.EpisodeId > 0)// Check if the episode has a valid ID
                             {
-                                int? savedPosition = await DataBaseHelper.LoadPlaybackProgressAsync(selectedEpisode.EpisodeId);
+                                int? savedPosition = await DatabaseHelper.LoadPlaybackProgressAsync(selectedEpisode.EpisodeId);
                                 if (savedPosition.HasValue)
                                 {
                                     player.Position = TimeSpan.FromSeconds(savedPosition.Value);
@@ -162,7 +181,7 @@ namespace PodWave_Player
             if (EpisodeList.SelectedItem is Episode selectedEpisode && selectedEpisode.EpisodeId > 0)// Check if an episode is selected and has a valid ID
             {
                 int currentPos = (int)player.Position.TotalSeconds;
-                await DataBaseHelper.SavePlaybackProgressAsync(selectedEpisode.EpisodeId, currentPos);
+                await DatabaseHelper.SavePlaybackProgressAsync(selectedEpisode.EpisodeId, currentPos);
             }
         }
 
@@ -171,36 +190,42 @@ namespace PodWave_Player
 
         
 
-        private async void AddRssFeed(object sender, RoutedEventArgs e) // Button click event to add a new RSS feed
+      private async void AddRssFeed(object sender, RoutedEventArgs e)
+{
+    // Beispiel mit Eingabebox – alternativ kannst du ein eigenes Window bauen
+    string feedUrl = Microsoft.VisualBasic.Interaction.InputBox("RSS-Feed-URL eingeben:", "Neuen Feed hinzufügen");
+
+    if (string.IsNullOrWhiteSpace(feedUrl))
+        return;
+
+    try
+    {
+        // Dekonstruktion korrigiert
+        var result = await RssParser.ParseFeedAsync(feedUrl);
+        Podcast podcast = result.Item1;
+        List<Episode> episodes = result.Item2;
+
+        // In DB speichern
+        int podcastId = await DatabaseHelper.InsertPodcast(podcast);
+
+        foreach (var episode in episodes)
         {
-            // TODO: Prüfen, ob Feed bereits vorhanden ist, bevor er hinzugefügt wird
-            // TODO: Fehlerbehandlung für ungültige/fehlende RSS-URLs erweitern
-            // TODO: Logging bei Feed-Fehlern einbauen
-
-
-            {
-                //FOR TESTINGG !!!!
-                string feedUrl = "https://it-berufe-podcast.de/feed/";
-
-                try
-                {
-                    Podcast podcast = await RssParser.LoadPodcastFromFeedAsync(feedUrl);
-                    podcasts.Add(podcast);
-
-
-                    PodcastList.ItemsSource = null;
-                    PodcastList.ItemsSource = podcasts;
-
-                    MessageBox.Show("Podcast \"" + podcast.TitleP + "\" loaded with " + podcast.Episodes.Count + " episodes.");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error loading RSS feed:\n" + ex.Message);
-                }
-
-
-            }
+            await DatabaseHelper.InsertEpisode(episode, podcastId);
         }
+
+        // UI aktualisieren
+        await LoadPodcastsFromDatabase(); // Achtung: async hinzufügen, damit Fehler vermieden werden
+
+        MessageBox.Show($"Podcast '{podcast.TitleP}' mit {episodes.Count} Episoden wurde hinzugefügt.");
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show("Fehler beim Laden des Feeds:\n" + ex.Message);
+    }
+}
+
+
+
 
         private void BTN_Minimize_Click(object sender, RoutedEventArgs e)
         {

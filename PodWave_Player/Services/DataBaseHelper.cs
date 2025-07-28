@@ -1,54 +1,96 @@
-﻿using System;
+﻿using PodWave_Player.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using MySqlConnector;
-using System.Configuration;
 
-namespace PodWave_Player.Services
+namespace PodWave_Player.Helpers
 {
-    class DataBaseHelper// This class provides methods to connect to the MySQL database using the connection string defined above.
+    public static class DatabaseHelper
     {
-
-        public static readonly string connectionString = "Server=localhost;Database=podwave_db;User ID=root;Password=;";
+        private const string ConnectionString = "Server=localhost;Database=podwave_db;Uid=root;Pwd=;";
 
         public static MySqlConnection GetConnection()
         {
-            return new MySqlConnection(connectionString);
+            return new MySqlConnection(ConnectionString);
         }
 
-        //save Progress of playback in the database
-        public static async Task SavePlaybackProgressAsync(int episodeId, int positionSec)
+        #region InsertPodcast
+        public static async Task<int> InsertPodcast(Podcast podcast)
         {
-            using var connection = new MySqlConnection(connectionString);
-            await connection.OpenAsync();
-            string query = "INSERT INTO progress (EpisodeId, PositionSec) VALUES (@EpisodeId, @PositionSec) " +
-                           "ON DUPLICATE KEY UPDATE PositionSec = @positionSec";
+            using var conn = new MySqlConnection(ConnectionString);
+            await conn.OpenAsync();
 
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@EpisodeId", episodeId);
-            cmd.Parameters.AddWithValue("@PositionSec", positionSec);
+            string query = "INSERT INTO podcast (Title, DescriptionP, FeedUrl) VALUES (@title, @desc, @url); SELECT LAST_INSERT_ID();";
+            using var cmd = new MySqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@title", podcast.TitleP);
+            cmd.Parameters.AddWithValue("@desc", podcast.DescriptionP);
+            cmd.Parameters.AddWithValue("@url", podcast.FeedUrl);
+
+            object result = await cmd.ExecuteScalarAsync();
+            return Convert.ToInt32(result);
+        }
+        #endregion
+
+        #region InsertEpisode
+        public static async Task InsertEpisode(Episode episode, int podcastId)
+        {
+            using var conn = new MySqlConnection(ConnectionString);
+            await conn.OpenAsync();
+
+            string query = "INSERT INTO episode (PodcastId, Title, DescriptionE, AudioUrl) VALUES (@pid, @title, @desc, @url)";
+            using var cmd = new MySqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@pid", podcastId);
+            cmd.Parameters.AddWithValue("@title", episode.TitleE);
+            cmd.Parameters.AddWithValue("@desc", episode.DescriptionE);
+            cmd.Parameters.AddWithValue("@url", episode.AudioUrl);
+
             await cmd.ExecuteNonQueryAsync();
-
-
         }
+        #endregion
 
-        // load playback progress from the database
+        #region LoadProgress
         public static async Task<int?> LoadPlaybackProgressAsync(int episodeId)
-        {
-            using var connection = new MySqlConnection(connectionString);
-            await connection.OpenAsync();
+            {
+                using var conn = GetConnection();
+                await conn.OpenAsync();
 
-            string query = "SELECT PositionSec FROM progress WHERE EpisodeId = @EpisodeId";
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@EpisodeId", episodeId);
+                string query = "SELECT PositionInSeconds FROM playbackprogress WHERE EpisodeId = @eid";
+                using var cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@eid", episodeId);
 
-            var result = await cmd.ExecuteScalarAsync();
-            return result == null ? null : Convert.ToInt32(result);
-        }
+                var result = await cmd.ExecuteScalarAsync(); //Execute....to only call upon one number
+                return result == null || result == DBNull.Value ? null : Convert.ToInt32(result);
+            }
+        #endregion
+
+        #region SaveProgress
+        public static async Task SavePlaybackProgressAsync(int episodeId, int positionInSeconds)
+            {
+                using var conn = GetConnection();
+                await conn.OpenAsync();
+
+                string query = @"INSERT INTO playbackprogress (EpisodeId, PositionInSeconds)
+                                 VALUES (@eid, @pos)
+                                 ON DUPLICATE KEY UPDATE PositionInSeconds = @pos";
+
+                using var cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@eid", episodeId);
+                cmd.Parameters.AddWithValue("@pos", positionInSeconds);
+
+                await cmd.ExecuteNonQueryAsync();
+            }
 
 
+    
+        #endregion
 
-    }
+
+        
+
+        
+        
+
+   }     
+
+
 }

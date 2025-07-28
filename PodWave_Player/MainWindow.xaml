@@ -50,8 +50,15 @@
                       LoadedBehavior="Manual"
                       UnloadedBehavior="Stop"
                       Stretch="Uniform"
-                      Margin="7,-7,-8,-6"/>
+                      Margin="0,-7,0,602"/>
                 </Border>
+                <Image x:Name="CoverImage"
+                   Width="506"
+                   Stretch="UniformToFill"
+                   Margin="27,31,0,40"
+                   HorizontalAlignment="Left"
+                   Source="{x:Null}" RenderTransformOrigin="0.682,0.772" Grid.Row="1" />
+
 
                 <!-- progressbar -->
 
@@ -88,7 +95,7 @@
                         IsSnapToTickEnabled="True"
                         ValueChanged="VolumeSlider_ValueChanged"/>
                         </StackPanel>
-                        <Button Content="🗁 RSS-Feed" Style="{StaticResource RoundButtonStyle}" Click="AddRssFeed" FontSize="15" FontWeight="Bold" Width="160" Foreground="White" Background="#7D57A6" Margin="0,5,0,5"/>
+                        <Button Content="Podcast hinzufügen" Style="{StaticResource RoundButtonStyle}" Click="AddRssFeed" FontSize="15" FontWeight="Bold" Width="160" Foreground="White" Background="#7D57A6" Margin="0,5,0,5"/>
                     </DockPanel>
                 </Border>
             </Grid>

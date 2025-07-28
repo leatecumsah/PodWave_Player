@@ -1,47 +1,59 @@
-﻿using System;
+﻿using PodWave_Player.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using System.Xml;
-using PodWave_Player.Models;
 
 namespace PodWave_Player.Services
 {
-    public static class RssParser // This class is responsible for parsing RSS feeds to extract podcast information.
+    public static class RssParser
     {
-        public static async Task<Podcast> LoadPodcastFromFeedAsync(string feedUrl) // This method fetches the RSS feed from the provided URL and parses it to create a Podcast object.
+        public static async Task<(Podcast, List<Episode>)> ParseFeedAsync(string feedUrl)
         {
-            using HttpClient client = new();
-            using var stream = await client.GetStreamAsync(feedUrl);
-            using XmlReader reader = XmlReader.Create(stream);
-
+            using XmlReader reader = XmlReader.Create(feedUrl);
             SyndicationFeed feed = SyndicationFeed.Load(reader);
 
-            Podcast podcast = new Podcast
+            if (feed == null)
+                throw new Exception("Feed konnte nicht gelesen werden.");
+
+            // Versuche das Podcast-Coverbild zu finden
+            string imageUrl = null;
+            var imageExtension = feed.ElementExtensions
+                .FirstOrDefault(ext => ext.OuterName == "image" &&
+                                       ext.OuterNamespace == "http://www.itunes.com/dtds/podcast-1.0.dtd");
+
+            if (imageExtension != null)
             {
-                TitleP = feed.Title?.Text ?? "No title",
-                DescriptionP = feed.Description?.Text ?? "No description",
-                Episodes = new List<Episode>()
-            };
-
-            foreach (var item in feed.Items) // Iterate through each item in the feed to extract episode details.
-            {
-                string audioUrl = item.Links.FirstOrDefault(l => l.RelationshipType == "enclosure")?.Uri.ToString();
-
-                var episode = new Episode
-                {
-                    TitleE = item.Title?.Text ?? "No title",
-                    DescriptionE = item.Summary?.Text ?? "",
-                    AudioUrl = audioUrl ?? "",
-                    DurationInSeconds = 0 // Optional: parse duration
-                };
-
-                podcast.Episodes.Add(episode);
+                var imgReader = imageExtension.GetReader();
+                if (imgReader.MoveToAttribute("href"))
+                    imageUrl = imgReader.Value;
             }
 
-            return podcast;
+            var podcast = new Podcast
+            {
+                TitleP = feed.Title?.Text,
+                DescriptionP = feed.Description?.Text,
+                FeedUrl = feedUrl,
+                ImageUrl = imageUrl // 🎯 Coverbild gespeichert
+            };
+
+            var episodes = new List<Episode>();
+
+            foreach (var item in feed.Items)
+            {
+                var episode = new Episode
+                {
+                    TitleE = item.Title?.Text,
+                    DescriptionE = item.Summary?.Text,
+                    AudioUrl = item.Links.FirstOrDefault()?.Uri.ToString()
+                };
+
+                episodes.Add(episode);
+            }
+
+            return (podcast, episodes);
         }
     }
 }
