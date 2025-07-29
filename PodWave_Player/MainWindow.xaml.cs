@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 
-// TODO: Alle Helper-Methoden in eigene Klasse (z. B. PlayerHelper) auslagern
+
 // TODO: Play-Button-Animation 
 #region helpers
 // TODO: aa
@@ -52,6 +52,7 @@ namespace PodWave_Player
             if (PodcastList.SelectedItem is Podcast selected)
             {
                 MetaTitle.Text = selected.TitleP;
+                EpisodeList.ItemsSource = null;
                 EpisodeList.ItemsSource = selected.Episodes;
 
                 // show Cover
@@ -75,62 +76,68 @@ namespace PodWave_Player
 
 
 
-        private async Task LoadPodcastsFromDatabase() // Method to load podcasts from the database
+        private async Task LoadPodcastsFromDatabase()
         {
             podcasts.Clear();
 
             using var conn = DatabaseHelper.GetConnection();
             await conn.OpenAsync();
 
-            string podcastQuery = "Select * from podcasts";
+            // load all podcasts from the database
+            string podcastQuery = "SELECT * FROM podcast";
             using var podcastCmd = new MySqlCommand(podcastQuery, conn);
             using var reader = await podcastCmd.ExecuteReaderAsync();
 
             while (await reader.ReadAsync())
             {
-                var podcast = new Podcast()
+                var podcast = new Podcast
                 {
-                    PodcastId = reader.GetInt32("PodcastId"),
+                    PodcastId = reader.GetInt32("Id"),
                     TitleP = reader["Title"]?.ToString(),
-                    DescriptionP = reader["Description"]?.ToString(),
-                    FeedUrl = reader["Feedurl"]?.ToString(),
+                    DescriptionP = reader["DescriptionP"]?.ToString(),
+                    FeedUrl = reader["FeedUrl"]?.ToString(),
                     ImageUrl = reader["ImageUrl"]?.ToString()
                 };
                 podcasts.Add(podcast);
             }
             await reader.CloseAsync();
 
-            foreach (var podcast in podcasts) // For each podcast, load its episodes from the database
+            // load episodes for each podcast
+            foreach (var podcast in podcasts)
             {
-                podcast.Episodes = new();
-                string episodeQuery = "SELECT * FROM episodes WHERE PodcastId = @PodcastId";
+                podcast.Episodes = new List<Episode>();
+
+                string episodeQuery = "SELECT * FROM episode WHERE PodcastId = @PodcastId";
                 using var episodeCmd = new MySqlCommand(episodeQuery, conn);
                 episodeCmd.Parameters.AddWithValue("@PodcastId", podcast.PodcastId);
 
                 using var episodeReader = await episodeCmd.ExecuteReaderAsync();
                 while (await episodeReader.ReadAsync())
                 {
-                    var episode = new Episode() // Create a new episode object
+                    var episode = new Episode
                     {
-                        EpisodeId = episodeReader.GetInt32("EpisodeId"), // Assuming EpisodeId is an int in the database
-                        TitleE = episodeReader["Title"]?.ToString(), // Get the title of the episode
-                        DescriptionE = episodeReader["Description"]?.ToString(), // Get the description of the episode
-                        AudioUrl = episodeReader["AudioUrl"]?.ToString(),// Get the audio URL of the episode
-                        DurationInSeconds = episodeReader.GetInt32("DurationInSeconds") // Get the duration of the episode in seconds
+                        EpisodeId = episodeReader.GetInt32("Id"),
+                        TitleE = episodeReader["Title"]?.ToString(),
+                        DescriptionE = episodeReader["DescriptionE"]?.ToString(),
+                        AudioUrl = episodeReader["AudioUrl"]?.ToString(),
+                        DurationInSeconds = episodeReader["DurationInSeconds"] == DBNull.Value ? 0 : Convert.ToInt32(episodeReader["DurationInSeconds"])
                     };
-
+                    podcast.Episodes.Add(episode);
                 }
-                await reader.CloseAsync(); // Close the reader for episodes
+                await episodeReader.CloseAsync();
             }
-            PodcastList.ItemsSource = null; // Clear the current items source to refresh the list
-            PodcastList.ItemsSource = podcasts; // Set the new items source to the updated podcasts list
+
+            PodcastList.ItemsSource = null;
+            PodcastList.ItemsSource = podcasts;
         }
+
 
         private async void EpisodeList_SelectionChanged(object sender, SelectionChangedEventArgs e)// Play the selected episode
         {
 
             // TODO: Fortschritt der Episode in die Datenbank speichern (PositionSec)
             // TODO: Fortschritt beim Start automatisch aus DB laden
+            // TODO: episoden des Podcasts anzeigen, wenn Podcast ausgewählt ist
 
 
             if (EpisodeList.SelectedItem is Episode selectedEpisode)// Check if an episode is selected

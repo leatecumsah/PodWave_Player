@@ -1810,23 +1810,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\leabu\\.nuget\\packages\\": {},
+    "C:\\Users\\buerklele\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\leabu\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj",
+      "projectUniqueName": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj",
       "projectName": "PodWave_Player",
-      "projectPath": "C:\\Users\\leabu\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj",
-      "packagesPath": "C:\\Users\\leabu\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\leabu\\source\\repos\\PodWave_Player\\PodWave_Player\\obj\\",
+      "projectPath": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj",
+      "packagesPath": "C:\\Users\\buerklele\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\leabu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\buerklele\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],

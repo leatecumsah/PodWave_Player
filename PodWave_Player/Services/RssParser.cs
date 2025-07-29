@@ -36,7 +36,7 @@ namespace PodWave_Player.Services
                 TitleP = feed.Title?.Text,
                 DescriptionP = feed.Description?.Text,
                 FeedUrl = feedUrl,
-                ImageUrl = imageUrl // 🎯 Coverbild gespeichert
+                ImageUrl = imageUrl //Coverpic saved!
             };
 
             var episodes = new List<Episode>();
