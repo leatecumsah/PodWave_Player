@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PodWave_Player")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+71116ad78d8222ead36d79e6a3cd570c5a59402d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ab114141f1948cf3e620663c6212677e4719bee9")]
 [assembly: System.Reflection.AssemblyProductAttribute("PodWave_Player")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PodWave_Player")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

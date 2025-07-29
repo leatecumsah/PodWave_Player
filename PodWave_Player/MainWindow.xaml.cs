@@ -42,6 +42,8 @@ namespace PodWave_Player
 
             timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += Timer_Tick;
+
+            SelectLastPlayedPodcast();
         }
         #endregion
 
@@ -54,7 +56,10 @@ namespace PodWave_Player
                 MetaTitle.Text = selected.TitleP;
                 EpisodeList.ItemsSource = null;
                 EpisodeList.ItemsSource = selected.Episodes;
+                
 
+                Properties.Settings.Default.LastPlayedPodcastId = selected.PodcastId;
+                Properties.Settings.Default.Save();
                 // show Cover
                 if (!string.IsNullOrEmpty(selected.ImageUrl))
                 {
@@ -72,8 +77,9 @@ namespace PodWave_Player
                     CoverImage.Source = null; // no pic there
                 }
             }
-        }
+            
 
+        }
 
 
         private async Task LoadPodcastsFromDatabase()
@@ -125,19 +131,33 @@ namespace PodWave_Player
                     podcast.Episodes.Add(episode);
                 }
                 await episodeReader.CloseAsync();
+
+                // Sortiere die Episoden nach Id aufsteigend (älteste zuerst)
+                podcast.Episodes = podcast.Episodes.OrderBy(e => e.EpisodeId).ToList();
             }
 
             PodcastList.ItemsSource = null;
             PodcastList.ItemsSource = podcasts;
+            
+
+            int lastId = Properties.Settings.Default.LastPlayedPodcastId;
+            var lastPodcast = podcasts.FirstOrDefault(p => p.PodcastId == lastId);
+            if (lastPodcast != null)
+            {
+                PodcastList.SelectedItem = lastPodcast;
+            }
+            ResumeLastPlayedEpisode();
         }
+
 
 
         private async void EpisodeList_SelectionChanged(object sender, SelectionChangedEventArgs e)// Play the selected episode
         {
 
-            // TODO: Fortschritt der Episode in die Datenbank speichern (PositionSec)
-            // TODO: Fortschritt beim Start automatisch aus DB laden
-            // TODO: episoden des Podcasts anzeigen, wenn Podcast ausgewählt ist
+          if (player.Source != null)
+            {
+                player.Pause();
+            }
 
 
             if (EpisodeList.SelectedItem is Episode selectedEpisode)// Check if an episode is selected
@@ -166,6 +186,62 @@ namespace PodWave_Player
                     catch (Exception ex) { MessageBox.Show("Fehler beim Abspielen: " + ex.Message); } // Catch any exceptions that occur during playback
             }
         }
+
+        private void SelectLastPlayedPodcast()
+            {
+                int lastId = Properties.Settings.Default.LastPlayedPodcastId;
+                if (lastId <= 0 || podcasts == null) return;
+
+                var podcast = podcasts.FirstOrDefault(p => p.PodcastId == lastId);
+                if (podcast != null)
+                {
+                    PodcastList.SelectedItem = podcast;
+                }
+            }
+
+        private void SaveLastPlayedState()
+            {
+                if (EpisodeList.SelectedItem is Episode currentEpisode)
+                {
+                    int position = (int)player.Position.TotalSeconds;
+
+                    Properties.Settings.Default.LastPlayedEpisodeId = currentEpisode.EpisodeId;
+                    Properties.Settings.Default.LastPlaybackPosition = position;
+                    Properties.Settings.Default.Save();
+                }
+            }
+
+        private void ResumeLastPlayedEpisode()
+            {
+                int lastEpisodeId = Properties.Settings.Default.LastPlayedEpisodeId;
+                int lastPos = Properties.Settings.Default.LastPlaybackPosition;
+
+                if (lastEpisodeId == 0)
+                    return;
+
+                foreach (var podcast in podcasts)
+                {
+                    var episode = podcast.Episodes.FirstOrDefault(e => e.EpisodeId == lastEpisodeId);
+                    if (episode != null)
+                    {
+                        PodcastList.SelectedItem = podcast;
+                        EpisodeList.SelectedItem = episode;
+
+                        player.Source = new Uri(episode.AudioUrl);
+                        player.MediaOpened += (s, e) =>
+                        {
+                            player.Position = TimeSpan.FromSeconds(lastPos);
+                            player.Play();
+                            timer.Start();
+                        };
+                        break;
+                    }
+                }
+            }
+
+
+
+
         #endregion
 
 
@@ -178,7 +254,23 @@ namespace PodWave_Player
         // TODO: Automatisch pausieren, wenn andere Episode gestartet wird
         // TODO: Lautstärke und Position aus vorheriger Sitzung laden
 
-        private void Previous_Click(object sender, RoutedEventArgs e) { }
+
+        private void Previous_Click(object sender, RoutedEventArgs e)
+            {
+                if (PodcastList.SelectedItem is Podcast selectedPodcast && 
+                    EpisodeList.SelectedItem is Episode selectedEpisode)
+                {
+                    var episodes = selectedPodcast.Episodes;
+                    int currentIndex = episodes.IndexOf(selectedEpisode);
+
+                    if (currentIndex > 0)
+                    {
+                        EpisodeList.SelectedItem = episodes[currentIndex - 1];
+                    }
+                }
+            }
+
+
 
         private async void StopButton_Click(object sender, RoutedEventArgs e)// Stop playback and save progress
         {
@@ -193,43 +285,57 @@ namespace PodWave_Player
         }
 
 
-        private void Next_Click(object sender, RoutedEventArgs e) { }
+
+        private void Next_Click(object sender, RoutedEventArgs e)
+            {
+                if (PodcastList.SelectedItem is Podcast selectedPodcast && 
+                    EpisodeList.SelectedItem is Episode selectedEpisode)
+                {
+                    var episodes = selectedPodcast.Episodes;
+                    int currentIndex = episodes.IndexOf(selectedEpisode);
+
+                    if (currentIndex < episodes.Count - 1)
+                    {
+                        EpisodeList.SelectedItem = episodes[currentIndex + 1];
+                    }
+                }
+            }
 
         
 
       private async void AddRssFeed(object sender, RoutedEventArgs e)
-{
-    // Beispiel mit Eingabebox – alternativ kannst du ein eigenes Window bauen
-    string feedUrl = Microsoft.VisualBasic.Interaction.InputBox("RSS-Feed-URL eingeben:", "Neuen Feed hinzufügen");
-
-    if (string.IsNullOrWhiteSpace(feedUrl))
-        return;
-
-    try
-    {
-        // Dekonstruktion korrigiert
-        var result = await RssParser.ParseFeedAsync(feedUrl);
-        Podcast podcast = result.Item1;
-        List<Episode> episodes = result.Item2;
-
-        // In DB speichern
-        int podcastId = await DatabaseHelper.InsertPodcast(podcast);
-
-        foreach (var episode in episodes)
         {
-            await DatabaseHelper.InsertEpisode(episode, podcastId);
+            // Beispiel mit Eingabebox – alternativ kannst du ein eigenes Window bauen
+            string feedUrl = Microsoft.VisualBasic.Interaction.InputBox("RSS-Feed-URL eingeben:", "Neuen Feed hinzufügen");
+
+            if (string.IsNullOrWhiteSpace(feedUrl))
+                return;
+
+            try
+            {
+                // Dekonstruktion korrigiert
+                var result = await RssParser.ParseFeedAsync(feedUrl);
+                Podcast podcast = result.Item1;
+                List<Episode> episodes = result.Item2;
+
+                // In DB speichern
+                int podcastId = await DatabaseHelper.InsertPodcast(podcast);
+
+                foreach (var episode in episodes)
+                {
+                    await DatabaseHelper.InsertEpisode(episode, podcastId);
+                }
+
+                // UI aktualisieren
+                await LoadPodcastsFromDatabase(); // Achtung: async hinzufügen, damit Fehler vermieden werden
+
+                MessageBox.Show($"Podcast '{podcast.TitleP}' mit {episodes.Count} Episoden wurde hinzugefügt.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fehler beim Laden des Feeds:\n" + ex.Message);
+            }
         }
-
-        // UI aktualisieren
-        await LoadPodcastsFromDatabase(); // Achtung: async hinzufügen, damit Fehler vermieden werden
-
-        MessageBox.Show($"Podcast '{podcast.TitleP}' mit {episodes.Count} Episoden wurde hinzugefügt.");
-    }
-    catch (Exception ex)
-    {
-        MessageBox.Show("Fehler beim Laden des Feeds:\n" + ex.Message);
-    }
-}
 
 
 
@@ -246,6 +352,8 @@ namespace PodWave_Player
 
         private void BTN_Close_Click(object sender, RoutedEventArgs e)
         {
+            SaveLastPlayedState();
+
             Close();
         }
         #endregion
