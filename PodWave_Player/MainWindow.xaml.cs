@@ -36,8 +36,8 @@ namespace PodWave_Player
         {
             InitializeComponent();
             //LoadDummyData();
-            _ = LoadPodcastsFromDatabase(); // Async ohne await aufrufen
-            VolumeSlider.Value = 0.5; // Initiale Lautstärke
+            _ = LoadPodcastsFromDatabase(); // Load podcasts asynchronously
+            VolumeSlider.Value = 0.5; // initial volume
             player.Volume = VolumeSlider.Value;
 
             timer.Interval = TimeSpan.FromMilliseconds(500);
@@ -56,7 +56,9 @@ namespace PodWave_Player
                 MetaTitle.Text = selected.TitleP;
                 EpisodeList.ItemsSource = null;
                 EpisodeList.ItemsSource = selected.Episodes;
-                
+
+                CoverImage.Source = new BitmapImage(new Uri(selected.ImageUrl));// show Cover check
+
 
                 Properties.Settings.Default.LastPlayedPodcastId = selected.PodcastId;
                 Properties.Settings.Default.Save();
@@ -66,6 +68,7 @@ namespace PodWave_Player
                     try
                     {
                         CoverImage.Source = new BitmapImage(new Uri(selected.ImageUrl));
+                        Console.WriteLine("ImageUrl: " + selected.ImageUrl);
                     }
                     catch
                     {
@@ -169,7 +172,10 @@ namespace PodWave_Player
                             var source = new Uri(selectedEpisode.AudioUrl);// Create a new Uri from the episode's audio URL
                             player.Source = source;// Set the player's source to the selected episode's audio URL
                             EpisodeTitleTextBlock.Text = selectedEpisode.TitleE;// Set the title text block to the selected episode's title
-                            
+                            MetaDuration.Text = selectedEpisode.DurationInSeconds > 0
+                            ? TimeSpan.FromSeconds(selectedEpisode.DurationInSeconds).ToString(@"hh\:mm\:ss")
+                            : "-";
+                            EpisodeDescriptionTextBlock.Text = selectedEpisode.DescriptionE;// Set the description text block to the selected episode's description
 
                             if (selectedEpisode.EpisodeId > 0)// Check if the episode has a valid ID
                             {
@@ -250,6 +256,7 @@ namespace PodWave_Player
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             player.Play(); // change aus pause wenn click!! noch einfügen
+
         }
         // TODO: Automatisch pausieren, wenn andere Episode gestartet wird
         // TODO: Lautstärke und Position aus vorheriger Sitzung laden
@@ -265,10 +272,11 @@ namespace PodWave_Player
 
                     if (currentIndex > 0)
                     {
-                        EpisodeList.SelectedItem = episodes[currentIndex - 1];
+                        EpisodeList.SelectedItem = episodes[currentIndex + 1];
                     }
                 }
-            }
+            player.Play();
+        }
 
 
 
@@ -286,7 +294,8 @@ namespace PodWave_Player
 
 
 
-        private void Next_Click(object sender, RoutedEventArgs e)
+        private void Next_Click(object sender, RoutedEventArgs e) //Button to play the next episode
+         
             {
                 if (PodcastList.SelectedItem is Podcast selectedPodcast && 
                     EpisodeList.SelectedItem is Episode selectedEpisode)
@@ -296,16 +305,17 @@ namespace PodWave_Player
 
                     if (currentIndex < episodes.Count - 1)
                     {
-                        EpisodeList.SelectedItem = episodes[currentIndex + 1];
+                        EpisodeList.SelectedItem = episodes[currentIndex - 1];
                     }
                 }
-            }
+            player.Play();
+        }
 
         
 
       private async void AddRssFeed(object sender, RoutedEventArgs e)
         {
-            // Beispiel mit Eingabebox – alternativ kannst du ein eigenes Window bauen
+            //new window to add a new RSS feed
             string feedUrl = Microsoft.VisualBasic.Interaction.InputBox("RSS-Feed-URL eingeben:", "Neuen Feed hinzufügen");
 
             if (string.IsNullOrWhiteSpace(feedUrl))
@@ -313,12 +323,12 @@ namespace PodWave_Player
 
             try
             {
-                // Dekonstruktion korrigiert
+              // parse the RSS feed
                 var result = await RssParser.ParseFeedAsync(feedUrl);
                 Podcast podcast = result.Item1;
                 List<Episode> episodes = result.Item2;
 
-                // In DB speichern
+                // save in db
                 int podcastId = await DatabaseHelper.InsertPodcast(podcast);
 
                 foreach (var episode in episodes)
@@ -326,8 +336,8 @@ namespace PodWave_Player
                     await DatabaseHelper.InsertEpisode(episode, podcastId);
                 }
 
-                // UI aktualisieren
-                await LoadPodcastsFromDatabase(); // Achtung: async hinzufügen, damit Fehler vermieden werden
+                // update the ui
+                await LoadPodcastsFromDatabase(); 
 
                 MessageBox.Show($"Podcast '{podcast.TitleP}' mit {episodes.Count} Episoden wurde hinzugefügt.");
             }

@@ -9,22 +9,23 @@ namespace PodWave_Player.Helpers
     {
         private const string ConnectionString = "Server=localhost;Database=podwave_db;Uid=root;Pwd=;";
 
-        public static MySqlConnection GetConnection()
+        public static MySqlConnection GetConnection() // Method to get a new MySqlConnection instance
         {
             return new MySqlConnection(ConnectionString);
         }
 
         #region InsertPodcast
-        public static async Task<int> InsertPodcast(Podcast podcast)
+        public static async Task<int> InsertPodcast(Podcast podcast)    // Method to insert a podcast into the database
         {
             using var conn = new MySqlConnection(ConnectionString);
             await conn.OpenAsync();
 
-            string query = "INSERT INTO podcast (Title, DescriptionP, FeedUrl) VALUES (@title, @desc, @url); SELECT LAST_INSERT_ID();";
+            string query = "INSERT INTO podcast (Title, DescriptionP, FeedUrl, ImageUrl) VALUES (@title, @desc, @url,@img); SELECT LAST_INSERT_ID();";
             using var cmd = new MySqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@title", podcast.TitleP);
             cmd.Parameters.AddWithValue("@desc", podcast.DescriptionP);
             cmd.Parameters.AddWithValue("@url", podcast.FeedUrl);
+            cmd.Parameters.AddWithValue("@img", podcast.ImageUrl);
 
             object result = await cmd.ExecuteScalarAsync();
             return Convert.ToInt32(result);
@@ -32,25 +33,26 @@ namespace PodWave_Player.Helpers
         #endregion
 
         #region InsertEpisode
-        public static async Task InsertEpisode(Episode episode, int podcastId)
+        public static async Task InsertEpisode(Episode episode, int podcastId) // Method to insert an episode into the database
         {
             using var conn = new MySqlConnection(ConnectionString);
             await conn.OpenAsync();
 
-            string query = "INSERT INTO episode (PodcastId, Title, DescriptionE, AudioUrl) VALUES (@pid, @title, @desc, @url)";
+            string query = "INSERT INTO episode (PodcastId, Title, DescriptionE, AudioUrl,DurationInSeconds) VALUES (@pid, @title, @desc, @url,@duration)";
             using var cmd = new MySqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@pid", podcastId);
             cmd.Parameters.AddWithValue("@title", episode.TitleE);
             cmd.Parameters.AddWithValue("@desc", episode.DescriptionE);
             cmd.Parameters.AddWithValue("@url", episode.AudioUrl);
+            cmd.Parameters.AddWithValue("@duration", episode.DurationInSeconds);
 
             await cmd.ExecuteNonQueryAsync();
         }
         #endregion
 
         #region LoadProgress
-        public static async Task<int?> LoadPlaybackProgressAsync(int episodeId)
-            {
+        public static async Task<int?> LoadPlaybackProgressAsync(int episodeId) // Method to load playback progress for a specific episode
+        {
                 using var conn = GetConnection();
                 await conn.OpenAsync();
 
@@ -64,8 +66,8 @@ namespace PodWave_Player.Helpers
         #endregion
 
         #region SaveProgress
-        public static async Task SavePlaybackProgressAsync(int episodeId, int positionInSeconds)
-            {
+        public static async Task SavePlaybackProgressAsync(int episodeId, int positionInSeconds)    // Method to save playback progress for a specific episode
+        {
                 using var conn = GetConnection();
                 await conn.OpenAsync();
 

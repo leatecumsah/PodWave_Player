@@ -18,17 +18,21 @@ namespace PodWave_Player.Services
             if (feed == null)
                 throw new Exception("Feed konnte nicht gelesen werden.");
 
-            // Versuche das Podcast-Coverbild zu finden
             string imageUrl = null;
-            var imageExtension = feed.ElementExtensions
-                .FirstOrDefault(ext => ext.OuterName == "image" &&
-                                       ext.OuterNamespace == "http://www.itunes.com/dtds/podcast-1.0.dtd");
 
-            if (imageExtension != null)
+            // 🎯 itunes:image lesen
+            var imageElement = feed.ElementExtensions.FirstOrDefault(e => e.OuterName == "image" || e.OuterName == "itunes:image");
+            if (imageElement != null)
             {
-                var imgReader = imageExtension.GetReader();
-                if (imgReader.MoveToAttribute("href"))
-                    imageUrl = imgReader.Value;
+                try
+                {
+                    var image = imageElement.GetObject<XmlElement>();
+                    imageUrl = image.GetAttribute("href");
+                }
+                catch
+                {
+                    imageUrl = null;
+                }
             }
 
             var podcast = new Podcast
@@ -36,24 +40,51 @@ namespace PodWave_Player.Services
                 TitleP = feed.Title?.Text,
                 DescriptionP = feed.Description?.Text,
                 FeedUrl = feedUrl,
-                ImageUrl = imageUrl //Coverpic saved!
+                ImageUrl = imageUrl // 🎯 hier wird's gesetzt
             };
 
             var episodes = new List<Episode>();
-
             foreach (var item in feed.Items)
             {
                 var episode = new Episode
                 {
                     TitleE = item.Title?.Text,
                     DescriptionE = item.Summary?.Text,
-                    AudioUrl = item.Links.FirstOrDefault()?.Uri.ToString()
+                    AudioUrl = item.Links.FirstOrDefault()?.Uri.ToString(),
+                    DurationInSeconds = TryParseDuration(item)
                 };
-
                 episodes.Add(episode);
             }
 
             return (podcast, episodes);
         }
+
+        private static int TryParseDuration(SyndicationItem item)
+        {
+            var durationElement = item.ElementExtensions
+                .FirstOrDefault(e => e.OuterName == "duration");
+
+            if (durationElement != null)
+            {
+                try
+                {
+                    string raw = durationElement.GetObject<string>();
+
+                    if (TimeSpan.TryParse(raw, out var time))
+                        return (int)time.TotalSeconds;
+
+                    // Alternative: Format "1234" (nur Sekunden)
+                    if (int.TryParse(raw, out var seconds))
+                        return seconds;
+                }
+                catch
+                {
+                    // ignorieren, wenn nicht parsbar
+                }
+            }
+
+            return 0;
+        }
+
     }
 }
