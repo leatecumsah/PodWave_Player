@@ -48,7 +48,7 @@ namespace PodWave_Player
         #endregion
 
 
-        #region CodeBehind
+        #region CodeBehind 
         private void PodcastList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (PodcastList.SelectedItem is Podcast selected)
@@ -251,19 +251,18 @@ namespace PodWave_Player
         #endregion
 
 
-        #region Buttons
+        #region Buttons Player
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            player.Play(); // change aus pause wenn click!! noch einfügen
-
+            player.Play();
+            //Todo: PlayButton to pausebutton and reverse
         }
-        // TODO: Automatisch pausieren, wenn andere Episode gestartet wird
-        // TODO: Lautstärke und Position aus vorheriger Sitzung laden
 
 
-        private void Previous_Click(object sender, RoutedEventArgs e)
-            {
+
+        private void Previous_Click(object sender, RoutedEventArgs e) //Button to play the previous episode
+        {
                 if (PodcastList.SelectedItem is Podcast selectedPodcast && 
                     EpisodeList.SelectedItem is Episode selectedEpisode)
                 {
@@ -311,9 +310,11 @@ namespace PodWave_Player
             player.Play();
         }
 
-        
 
-      private async void AddRssFeed(object sender, RoutedEventArgs e)
+        #endregion
+
+        #region Add new Podcast to DB
+        private async void AddRssFeed(object sender, RoutedEventArgs e)
         {
             //new window to add a new RSS feed
             string feedUrl = Microsoft.VisualBasic.Interaction.InputBox("RSS-Feed-URL eingeben:", "Neuen Feed hinzufügen");
@@ -323,7 +324,7 @@ namespace PodWave_Player
 
             try
             {
-              // parse the RSS feed
+                // parse the RSS feed
                 var result = await RssParser.ParseFeedAsync(feedUrl);
                 Podcast podcast = result.Item1;
                 List<Episode> episodes = result.Item2;
@@ -337,7 +338,7 @@ namespace PodWave_Player
                 }
 
                 // update the ui
-                await LoadPodcastsFromDatabase(); 
+                await LoadPodcastsFromDatabase();
 
                 MessageBox.Show($"Podcast '{podcast.TitleP}' mit {episodes.Count} Episoden wurde hinzugefügt.");
             }
@@ -346,10 +347,9 @@ namespace PodWave_Player
                 MessageBox.Show("Fehler beim Laden des Feeds:\n" + ex.Message);
             }
         }
+        #endregion
 
-
-
-
+        #region Buttons Window
         private void BTN_Minimize_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
@@ -367,7 +367,6 @@ namespace PodWave_Player
             Close();
         }
         #endregion
-
 
         #region ProgressSlider
 
@@ -390,10 +389,8 @@ namespace PodWave_Player
         private void ProgressSlider_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) { } // Handle mouse down event on the progress slider 
         #endregion
 
-
         #region VolumeSlider
 
-        // TODO: Lautstärke-Icon anpassen (stumm vs. laut)
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -412,7 +409,6 @@ namespace PodWave_Player
             }
         }
         #endregion
-
 
         #region TestData
         //private void LoadDummyData()

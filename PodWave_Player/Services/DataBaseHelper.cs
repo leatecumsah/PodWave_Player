@@ -5,7 +5,7 @@ using MySqlConnector;
 
 namespace PodWave_Player.Helpers
 {
-    public static class DatabaseHelper
+    public static class DatabaseHelper // Helper class for database operations related to podcasts and episodes
     {
         private const string ConnectionString = "Server=localhost;Database=podwave_db;Uid=root;Pwd=;";
 
