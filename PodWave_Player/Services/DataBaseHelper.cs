@@ -53,46 +53,41 @@ namespace PodWave_Player.Helpers
         #region LoadProgress
         public static async Task<int?> LoadPlaybackProgressAsync(int episodeId) // Method to load playback progress for a specific episode
         {
-                using var conn = GetConnection();
-                await conn.OpenAsync();
+            using var conn = GetConnection();
+            await conn.OpenAsync();
 
-                string query = "SELECT PositionInSeconds FROM playbackprogress WHERE EpisodeId = @eid";
-                using var cmd = new MySqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@eid", episodeId);
+            string query = "SELECT PositionInSeconds FROM playbackprogress WHERE EpisodeId = @eid";
+            using var cmd = new MySqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@eid", episodeId);
 
-                var result = await cmd.ExecuteScalarAsync(); //Execute....to only call upon one number
-                return result == null || result == DBNull.Value ? null : Convert.ToInt32(result);
-            }
+            var result = await cmd.ExecuteScalarAsync(); //Execute....to only call upon one number
+            return result == null || result == DBNull.Value ? null : Convert.ToInt32(result); 
+        }
         #endregion
 
         #region SaveProgress
         public static async Task SavePlaybackProgressAsync(int episodeId, int positionInSeconds)    // Method to save playback progress for a specific episode
         {
-                using var conn = GetConnection();
-                await conn.OpenAsync();
+            using var conn = GetConnection();
+            await conn.OpenAsync();
 
-                string query = @"INSERT INTO playbackprogress (EpisodeId, PositionInSeconds)
+            string query = @"INSERT INTO playbackprogress (EpisodeId, PositionInSeconds)
                                  VALUES (@eid, @pos)
                                  ON DUPLICATE KEY UPDATE PositionInSeconds = @pos";
 
-                using var cmd = new MySqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@eid", episodeId);
-                cmd.Parameters.AddWithValue("@pos", positionInSeconds);
+            using var cmd = new MySqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@eid", episodeId);
+            cmd.Parameters.AddWithValue("@pos", positionInSeconds);
 
-                await cmd.ExecuteNonQueryAsync();
-            }
+            await cmd.ExecuteNonQueryAsync();
+        }
 
 
-    
         #endregion
 
 
-        
 
-        
-        
-
-   }     
+    }
 
 
 }

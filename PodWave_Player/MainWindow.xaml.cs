@@ -1,7 +1,7 @@
 ﻿using MySqlConnector;
 using PodWave_Player.Helpers;
-using PodWave_Player.Models; 
-using PodWave_Player.Services;// internal Service methode for the rsss thingy
+using PodWave_Player.Models;
+using PodWave_Player.Services;// internal Service methode for the
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,7 +15,7 @@ using System.Windows.Threading;
 
 // TODO: Play-Button-Animation 
 #region helpers
-// TODO: aa
+// TODO: 
 #region
 #endregion
 
@@ -80,7 +80,7 @@ namespace PodWave_Player
                     CoverImage.Source = null; // no pic there
                 }
             }
-            
+
 
         }
 
@@ -141,7 +141,7 @@ namespace PodWave_Player
 
             PodcastList.ItemsSource = null;
             PodcastList.ItemsSource = podcasts;
-            
+
 
             int lastId = Properties.Settings.Default.LastPlayedPodcastId;
             var lastPodcast = podcasts.FirstOrDefault(p => p.PodcastId == lastId);
@@ -157,7 +157,7 @@ namespace PodWave_Player
         private async void EpisodeList_SelectionChanged(object sender, SelectionChangedEventArgs e)// Play the selected episode
         {
 
-          if (player.Source != null)
+            if (player.Source != null)
             {
                 player.Pause();
             }
@@ -194,56 +194,56 @@ namespace PodWave_Player
         }
 
         private void SelectLastPlayedPodcast()
-            {
-                int lastId = Properties.Settings.Default.LastPlayedPodcastId;
-                if (lastId <= 0 || podcasts == null) return;
+        {
+            int lastId = Properties.Settings.Default.LastPlayedPodcastId;
+            if (lastId <= 0 || podcasts == null) return;
 
-                var podcast = podcasts.FirstOrDefault(p => p.PodcastId == lastId);
-                if (podcast != null)
-                {
-                    PodcastList.SelectedItem = podcast;
-                }
+            var podcast = podcasts.FirstOrDefault(p => p.PodcastId == lastId);
+            if (podcast != null)
+            {
+                PodcastList.SelectedItem = podcast;
             }
+        }
 
         private void SaveLastPlayedState()
+        {
+            if (EpisodeList.SelectedItem is Episode currentEpisode)
             {
-                if (EpisodeList.SelectedItem is Episode currentEpisode)
-                {
-                    int position = (int)player.Position.TotalSeconds;
+                int position = (int)player.Position.TotalSeconds;
 
-                    Properties.Settings.Default.LastPlayedEpisodeId = currentEpisode.EpisodeId;
-                    Properties.Settings.Default.LastPlaybackPosition = position;
-                    Properties.Settings.Default.Save();
-                }
+                Properties.Settings.Default.LastPlayedEpisodeId = currentEpisode.EpisodeId;
+                Properties.Settings.Default.LastPlaybackPosition = position;
+                Properties.Settings.Default.Save();
             }
+        }
 
         private void ResumeLastPlayedEpisode()
+        {
+            int lastEpisodeId = Properties.Settings.Default.LastPlayedEpisodeId;
+            int lastPos = Properties.Settings.Default.LastPlaybackPosition;
+
+            if (lastEpisodeId == 0)
+                return;
+
+            foreach (var podcast in podcasts)
             {
-                int lastEpisodeId = Properties.Settings.Default.LastPlayedEpisodeId;
-                int lastPos = Properties.Settings.Default.LastPlaybackPosition;
-
-                if (lastEpisodeId == 0)
-                    return;
-
-                foreach (var podcast in podcasts)
+                var episode = podcast.Episodes.FirstOrDefault(e => e.EpisodeId == lastEpisodeId);
+                if (episode != null)
                 {
-                    var episode = podcast.Episodes.FirstOrDefault(e => e.EpisodeId == lastEpisodeId);
-                    if (episode != null)
-                    {
-                        PodcastList.SelectedItem = podcast;
-                        EpisodeList.SelectedItem = episode;
+                    PodcastList.SelectedItem = podcast;
+                    EpisodeList.SelectedItem = episode;
 
-                        player.Source = new Uri(episode.AudioUrl);
-                        player.MediaOpened += (s, e) =>
-                        {
-                            player.Position = TimeSpan.FromSeconds(lastPos);
-                            player.Play();
-                            timer.Start();
-                        };
-                        break;
-                    }
+                    player.Source = new Uri(episode.AudioUrl);
+                    player.MediaOpened += (s, e) =>
+                    {
+                        player.Position = TimeSpan.FromSeconds(lastPos);
+                        player.Play();
+                        timer.Start();
+                    };
+                    break;
                 }
             }
+        }
 
 
 
@@ -263,17 +263,17 @@ namespace PodWave_Player
 
         private void Previous_Click(object sender, RoutedEventArgs e) //Button to play the previous episode
         {
-                if (PodcastList.SelectedItem is Podcast selectedPodcast && 
-                    EpisodeList.SelectedItem is Episode selectedEpisode)
-                {
-                    var episodes = selectedPodcast.Episodes;
-                    int currentIndex = episodes.IndexOf(selectedEpisode);
+            if (PodcastList.SelectedItem is Podcast selectedPodcast &&
+                EpisodeList.SelectedItem is Episode selectedEpisode)
+            {
+                var episodes = selectedPodcast.Episodes;
+                int currentIndex = episodes.IndexOf(selectedEpisode);
 
-                    if (currentIndex > 0)
-                    {
-                        EpisodeList.SelectedItem = episodes[currentIndex + 1];
-                    }
+                if (currentIndex > 0)
+                {
+                    EpisodeList.SelectedItem = episodes[currentIndex + 1];
                 }
+            }
             player.Play();
         }
 
@@ -294,19 +294,19 @@ namespace PodWave_Player
 
 
         private void Next_Click(object sender, RoutedEventArgs e) //Button to play the next episode
-         
-            {
-                if (PodcastList.SelectedItem is Podcast selectedPodcast && 
-                    EpisodeList.SelectedItem is Episode selectedEpisode)
-                {
-                    var episodes = selectedPodcast.Episodes;
-                    int currentIndex = episodes.IndexOf(selectedEpisode);
 
-                    if (currentIndex < episodes.Count - 1)
-                    {
-                        EpisodeList.SelectedItem = episodes[currentIndex - 1];
-                    }
+        {
+            if (PodcastList.SelectedItem is Podcast selectedPodcast &&
+                EpisodeList.SelectedItem is Episode selectedEpisode)
+            {
+                var episodes = selectedPodcast.Episodes;
+                int currentIndex = episodes.IndexOf(selectedEpisode);
+
+                if (currentIndex < episodes.Count - 1)
+                {
+                    EpisodeList.SelectedItem = episodes[currentIndex - 1];
                 }
+            }
             player.Play();
         }
 
@@ -425,6 +425,6 @@ namespace PodWave_Player
         //    PodcastList.ItemsSource = podcasts;
         //}
         #endregion
-  
+
     }
 }

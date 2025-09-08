@@ -40,7 +40,7 @@ namespace PodWave_Player.Services
                 TitleP = feed.Title?.Text,
                 DescriptionP = feed.Description?.Text,
                 FeedUrl = feedUrl,
-                ImageUrl = imageUrl // 🎯 hier wird's gesetzt
+                ImageUrl = imageUrl 
             };
 
             var episodes = new List<Episode>();// Create a list to hold episodes extracted from the feed of the podcast
@@ -74,7 +74,7 @@ namespace PodWave_Player.Services
                     if (TimeSpan.TryParse(raw, out var time)) // Try to parse the duration as a TimeSpan
                         return (int)time.TotalSeconds;
 
-                    
+
                     if (int.TryParse(raw, out var seconds)) //Alternative: Try to parse the duration as an integer (in seconds)
                         return seconds;
                 }
