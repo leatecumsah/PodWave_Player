@@ -1,25 +1,170 @@
-﻿<Window x:Class="PodWave_Player.MainWindow"
+﻿<Window 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="PodWave" Height="500" Width="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
+        xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="PodWave_Player.MainWindow"
+        Title="PodWave" Height="777" Width="899" Margin="10,10,10,10"
+        Icon="Assets/podwaveicon.ico"
+        >
+    <Border BorderBrush="#FFD5FF" BorderThickness="4" CornerRadius="15" Margin="0,10,0,5" HorizontalAlignment="Left" Width="857">
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#D4B4E2" Offset="0.0"/>
+                <GradientStop Color="#8663AC" Offset="0.5"/>
+                <GradientStop Color="#EFE1F3" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Border.Background>
 
-        <!-- Linke Spalte: Liste aller Podcasts -->
-        <ListBox x:Name="PodcastList" Grid.Column="0" SelectionChanged="PodcastList_SelectionChanged"
-                 DisplayMemberPath="Titel" Margin="10"/>
+        <Grid  Margin="6,6,6,6" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <!-- Video and control -->
+                <ColumnDefinition Width="201"/>
+                <!-- Metadaa-->
+            </Grid.ColumnDefinitions>
 
-        <!-- Rechte Spalte: Details + Abspielsteuerung -->
-        <StackPanel Grid.Column="1" Margin="10">
-            <TextBlock x:Name="PodcastTitle" FontSize="20" FontWeight="Bold"/>
-            <TextBlock x:Name="PodcastDescription" TextWrapping="Wrap" Margin="0,10,0,10"/>
-            <Button Content="Abspielen" Click="PlayButton_Click" Width="100"/>
+            <Grid Grid.Column="0" Margin="10,0,191,0" Grid.ColumnSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <!-- 0: Titelleiste -->
+                    <RowDefinition Height="*"/>
+                    <!-- 1: MediaElement -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- 2: ProgressSlider -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- 3: Controlbar -->
+                </Grid.RowDefinitions>
 
-            <MediaElement x:Name="Player" LoadedBehavior="Manual" Margin="0,20,0,0"/>
-        </StackPanel>
-    </Grid>
+                <!-- top-panel -->
+                <DockPanel Grid.Row="0" LastChildFill="True" HorizontalAlignment="Left" Width="601" Margin="0,0,0,0">
+                    <Border CornerRadius="15,15,15,15"  Background="#EFE1F3" BorderThickness="0" Width="601">
+                        <DockPanel  Height="35" Margin="0,0,0,0">
+                            <Image Source="Assets/podwaveicon.ico" Width="32" Height="33" Margin="15,0,15,0"/>
+                            <TextBlock Text="PodWave" FontFamily="Harlow Solid Italic" FontSize="30" Foreground="#8663AC" FontWeight="Bold" Width="511" RenderTransformOrigin="0.436,0.544"/>
+
+                        </DockPanel>
+                    </Border>
+                </DockPanel>
+
+                <!-- Videogrid -->
+                <Border Background="#EFE1F3" Grid.Row="1" CornerRadius="10" Margin="0,9,0,10" HorizontalAlignment="Left" Width="601">
+                    <MediaElement x:Name="player"
+                      LoadedBehavior="Manual"
+                      UnloadedBehavior="Stop"
+                      Stretch="Uniform"
+                      Margin="10,10,10,10"
+                      Visibility="Collapsed"/>
+
+                </Border>
+                <Image x:Name="CoverImage"
+                   Width="546"
+                       
+                   Stretch="UniformToFill"
+                   Margin="27,31,0,22"
+                   HorizontalAlignment="Left"
+                   RenderTransformOrigin="0.682,0.772" Grid.Row="1" />
+
+
+                <!-- progressbar -->
+
+                <Slider x:Name="ProgressSlider"
+            Grid.Row="2"
+            Margin="0,5,35,5"
+            Height="15"
+            Minimum="0"
+            Maximum="100"
+            Value="0"
+            Background="#EFE1F3"
+            Foreground="#8663AC"
+            MouseDown="ProgressSlider_MouseDown"
+            ValueChanged="ProgressSlider_ValueChanged"
+                        Width="601"/>
+
+
+
+                <!-- controllbar -->
+                <Border Grid.Row="3" Background="#D4B4E2" CornerRadius="15" Margin="0,4,35,10">
+                    <DockPanel Margin="5,0,0,0">
+                        <Button Content="⏮" Style="{StaticResource RoundButtonStyle}" Click="Previous_Click" />
+                        <Button Content=" ▶" Style="{StaticResource RoundButtonStyle}" Click="PlayButton_Click"/>
+                        <Button Content="⏭" Style="{StaticResource RoundButtonStyle}" Click="Next_Click"/>
+                        <Button Content="⏹" Style="{StaticResource RoundButtonStyle}" Click="StopButton_Click"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,10,0">
+                            <Label x:Name="VolumeIcon" Content="🔊" Foreground="#8663AC" Height="27" Width="26"/>
+                            <Slider x:Name="VolumeSlider"
+                        Minimum="0"
+                        Maximum="1"
+                        Value="0.5"
+                        Width="142"
+                        Margin="0,7,0,0"
+                        TickFrequency="0.1"
+                        IsSnapToTickEnabled="True"
+                        ValueChanged="VolumeSlider_ValueChanged"/>
+                        </StackPanel>
+                        <Button Content="Podcast hinzufügen" Style="{StaticResource RoundButtonStyle}" FontFamily="Harlow Solid Italic" Click="AddRssFeed" FontSize="20"  Width="160" Foreground="White" Background="#7D57A6" Margin="0,5,0,5"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+
+            <!-- Metadata -->
+            <Border Grid.Column="1" Background="#EFE1F3" CornerRadius="10" Margin="10,0,10,441">
+                <StackPanel Margin="10">
+                    <TextBlock Text="currently playing" FontFamily="Harlow Solid Italic" FontSize="22" FontWeight="Bold" Foreground="#8663AC"/>
+                    <TextBlock Text="Podcast-Titel:" Foreground="#8663AC" FontWeight="Bold"/>
+                    <TextBlock x:Name="MetaTitle" Text="-" Foreground="#8663AC"/>
+                    <TextBlock Text="Episode-Titel:" Foreground="#8663AC" FontWeight="Bold"/>
+                    <TextBlock x:Name="EpisodeTitleTextBlock" Text="-" Foreground="#8663AC"/>
+                    <TextBlock Text="Dauer:" Foreground="#8663AC" FontWeight="Bold"/>
+                    <TextBlock x:Name="MetaDuration" Text="-" Foreground="#8663AC"/>
+                    <TextBlock Text="Episode Discription:" Foreground="#8663AC" FontWeight="Bold"/>
+                    <TextBlock x:Name="EpisodeDescriptionTextBlock" Foreground="#8663AC"  RenderTransformOrigin="0.5,0.5" 
+                               Text="{Binding DescriptionP}"
+                       TextWrapping="Wrap"
+                       MaxWidth="178"
+                       MaxHeight="100"
+                       
+                       TextTrimming="CharacterEllipsis" Height="81" Width="158"/>
+                             
+
+                </StackPanel>
+
+            </Border>
+
+            <!--Playlist-->
+            <Border Grid.Column="1" Background="#EFE1F3" CornerRadius="10" Margin="10,305,10,0" Height="423" VerticalAlignment="Top">
+                <StackPanel Margin="10,10,10,10">
+                    <TextBlock Text="Playlist" FontFamily="Harlow Solid Italic" FontSize="22" FontWeight="Bold" Foreground="#8663AC" Height="31"/>
+                    <ListBox 
+                        x:Name="PodcastList" ItemsSource="{Binding Videos}"
+                         SelectionChanged="PodcastList_SelectionChanged"
+                         DisplayMemberPath="TitleP"
+                         Background="#EFE1F3"
+                         Foreground="#8663AC"
+                         Height="120"
+                         />
+                    <TextBlock Text="Episodes" FontFamily="Harlow Solid Italic" FontSize="22" FontWeight="Bold" Foreground="#8663AC" Margin="0,10,0,0"/>
+                    <ListBox x:Name="EpisodeList"
+                         DisplayMemberPath="TitleE"
+                         SelectionChanged="EpisodeList_SelectionChanged"
+                         Background="#EFE1F3"
+                         Foreground="#8663AC"
+                         Height="212"/>
+
+
+
+                </StackPanel>
+
+            </Border>
+            <StackPanel Orientation="Horizontal"
+            Grid.Row="0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="0,0,41,0">
+                <Button x:Name="BTN_Minimize" Content="🗕" Style="{StaticResource ControlButtonStyle}" Click="BTN_Minimize_Click" Width="30"/>
+                <Button x:Name="BTN_Maximize" Content="🗖" Style="{StaticResource ControlButtonStyle}" Click="BTN_Maximize_Click"/>
+                <Button x:Name="BTN_Close" Content="✕" Style="{StaticResource ControlButtonStyle}" Click="BTN_Close_Click"/>
+            </StackPanel>
+
+
+        </Grid>
+    </Border>
 </Window>
-
