@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj": {}
+    "C:\\Users\\leabu\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj": {}
   },
   "projects": {
-    "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj": {
+    "C:\\Users\\leabu\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj",
+        "projectUniqueName": "C:\\Users\\leabu\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj",
         "projectName": "PodWave_Player",
-        "projectPath": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj",
-        "packagesPath": "C:\\Users\\buerklele\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\buerklele\\source\\repos\\PodWave_Player\\PodWave_Player\\obj\\",
+        "projectPath": "C:\\Users\\leabu\\source\\repos\\PodWave_Player\\PodWave_Player\\PodWave_Player.csproj",
+        "packagesPath": "C:\\Users\\leabu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\leabu\\source\\repos\\PodWave_Player\\PodWave_Player\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\buerklele\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\leabu\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -74,7 +74,11 @@
               "privateAssets": "none"
             }
           },
+<<<<<<< Updated upstream
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+=======
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+>>>>>>> Stashed changes
         }
       }
     }

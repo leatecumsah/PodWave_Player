@@ -45,7 +45,11 @@ namespace PodWave_Player {
         /// InitializeComponent
         /// </summary>
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
+<<<<<<< Updated upstream
         [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "9.0.5.0")]
+=======
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "9.0.7.0")]
+>>>>>>> Stashed changes
         public void InitializeComponent() {
             
             #line 5 "..\..\..\App.xaml"
@@ -53,6 +57,16 @@ namespace PodWave_Player {
             
             #line default
             #line hidden
+<<<<<<< Updated upstream
+=======
+            System.Uri resourceLocater = new System.Uri("/PodWave_Player;V1.0.0.0;component/app.xaml", System.UriKind.Relative);
+            
+            #line 1 "..\..\..\App.xaml"
+            System.Windows.Application.LoadComponent(this, resourceLocater);
+            
+            #line default
+            #line hidden
+>>>>>>> Stashed changes
         }
         
         /// <summary>
@@ -60,7 +74,11 @@ namespace PodWave_Player {
         /// </summary>
         [System.STAThreadAttribute()]
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
+<<<<<<< Updated upstream
         [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "9.0.5.0")]
+=======
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "9.0.7.0")]
+>>>>>>> Stashed changes
         public static void Main() {
             PodWave_Player.App app = new PodWave_Player.App();
             app.InitializeComponent();
